@@ -15,20 +15,27 @@
   },
   "license": "MIT",
   "author": "Danny Wieser",
-  "type": "module",
-  "main": "dist/index.js",
+  "main": "dist/server.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "ts-node-dev --respawn src/server/index.ts"
+    "start": "node ./dist/server.js",
+    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' ./src/server/server.ts",
+    "web": "vite ./src/web",
+    "web-build": "vite build ./src/web"
   },
   "devDependencies": {
-    "@types/express": "^5.0.3",
-    "@types/node": "^24.3.0",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.9.2"
+    "@types/express": "5.0.3",
+    "@types/node": "24.3.0",
+    "@types/react-dom": "19.1.7",
+    "@vitejs/plugin-react": "5.0.0",
+    "nodemon": "3.1.10",
+    "ts-node": "10.9.2",
+    "typescript": "5.9.2",
+    "vite": "7.1.2"
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "5.1.0",
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
   }
 }
