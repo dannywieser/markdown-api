@@ -17,11 +17,12 @@
   "author": "Danny Wieser",
   "main": "dist/server.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && vite build ./src/web",
+    "build-server": "tsc",
+    "build-web": "vite build ./src/web",
     "start": "node ./dist/server/server.js",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' ./src/server/server.ts",
     "web": "vite ./src/web",
-    "web-build": "vite build ./src/web",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
     "test": "echo TODO"
