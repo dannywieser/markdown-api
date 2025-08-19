@@ -21,16 +21,22 @@
     "start": "node ./dist/server/server.js",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' ./src/server/server.ts",
     "web": "vite ./src/web",
-    "web-build": "vite build ./src/web"
+    "web-build": "vite build ./src/web",
+    "lint": "eslint ."
   },
   "devDependencies": {
+    "@eslint/js": "9.33.0",
     "@types/express": "5.0.3",
     "@types/node": "24.3.0",
     "@types/react-dom": "19.1.7",
     "@vitejs/plugin-react": "5.0.0",
+    "eslint": "9.33.0",
+    "eslint-plugin-react": "7.37.5",
+    "globals": "16.3.0",
     "nodemon": "3.1.10",
     "ts-node": "10.9.2",
     "typescript": "5.9.2",
+    "typescript-eslint": "8.40.0",
     "vite": "7.1.2"
   },
   "dependencies": {
