@@ -1,0 +1,41 @@
+{
+  "name": "markdownmemory",
+  "version": "0.0.1",
+  "keywords": [
+    "markdown"
+  ],
+  "description": "A static site generator for Markdown focused on reliving the memories captured in your writing.",
+  "homepage": "https://github.com/dannywieser/markdownmemory#readme",
+  "bugs": {
+    "url": "https://github.com/dannywieser/markdownmemory/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dannywieser/markdownmemory.git"
+  },
+  "license": "MIT",
+  "author": "Danny Wieser",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./dist/server/server.js",
+    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' ./src/server/server.ts",
+    "web": "vite ./src/web",
+    "web-build": "vite build ./src/web"
+  },
+  "devDependencies": {
+    "@types/express": "5.0.3",
+    "@types/node": "24.3.0",
+    "@types/react-dom": "19.1.7",
+    "@vitejs/plugin-react": "5.0.0",
+    "nodemon": "3.1.10",
+    "ts-node": "10.9.2",
+    "typescript": "5.9.2",
+    "vite": "7.1.2"
+  },
+  "dependencies": {
+    "express": "5.1.0",
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  }
+}
