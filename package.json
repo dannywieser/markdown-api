@@ -18,7 +18,7 @@
   "main": "dist/server.js",
   "scripts": {
     "build": "tsc",
-    "start": "node ./dist/server.js",
+    "start": "node ./dist/server/server.js",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' ./src/server/server.ts",
     "web": "vite ./src/web",
     "web-build": "vite build ./src/web"
