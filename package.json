@@ -23,7 +23,8 @@
     "web": "vite ./src/web",
     "web-build": "vite build ./src/web",
     "lint": "eslint .",
-    "lint-fix": "eslint . --fix"
+    "lint-fix": "eslint . --fix",
+    "test": "echo TODO"
   },
   "devDependencies": {
     "@eslint/js": "9.33.0",
