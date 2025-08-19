@@ -1,5 +1,5 @@
 function App() {
-  return <>Hello World</>
+  return <>Hello World From React!</>
 }
 
 export default App
