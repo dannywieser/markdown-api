@@ -1,28 +1,30 @@
-import js from "@eslint/js";
-import globals from "globals";
-import tseslint from "typescript-eslint";
-import pluginReact from "eslint-plugin-react";
-import { defineConfig, globalIgnores } from "eslint/config";
+import js from '@eslint/js'
+import globals from 'globals'
+import tseslint from 'typescript-eslint'
+import pluginReact from 'eslint-plugin-react'
+import { defineConfig, globalIgnores } from 'eslint/config'
+import pluginPrettier from 'eslint-plugin-prettier/recommended'
 
 export default defineConfig([
   {
-    files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+    files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     plugins: { js },
-    extends: ["js/recommended"],
+    extends: ['js/recommended'],
     languageOptions: { globals: { ...globals.browser, ...globals.node } },
     settings: {
       react: {
-        version: "detect",
+        version: 'detect',
       },
     },
   },
 
-  globalIgnores(["dist"]),
+  globalIgnores(['dist']),
   tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
+  pluginPrettier,
   {
     rules: {
-      "react/react-in-jsx-scope": "off",
+      'react/react-in-jsx-scope': 'off',
     },
   },
-]);
+])

@@ -22,7 +22,8 @@
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' ./src/server/server.ts",
     "web": "vite ./src/web",
     "web-build": "vite build ./src/web",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix"
   },
   "devDependencies": {
     "@eslint/js": "9.33.0",
@@ -31,9 +32,12 @@
     "@types/react-dom": "19.1.7",
     "@vitejs/plugin-react": "5.0.0",
     "eslint": "9.33.0",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-prettier": "5.5.4",
     "eslint-plugin-react": "7.37.5",
     "globals": "16.3.0",
     "nodemon": "3.1.10",
+    "prettier": "3.6.2",
     "ts-node": "10.9.2",
     "typescript": "5.9.2",
     "typescript-eslint": "8.40.0",
