@@ -1,7 +1,7 @@
 import express from 'express'
 import path from 'path'
 
-import { noteByUniqueId } from './noteCache/bear/main'
+import { noteByUniqueId } from './interfaces/bear/main'
 const app = express()
 
 app.use(express.static(path.join(__dirname, '../../dist-web')))
