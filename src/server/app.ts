@@ -1,15 +1,14 @@
 import express from 'express'
 import path from 'path'
 
-import { extractBear } from './noteCache/bear/main'
+import { noteByUniqueId } from './noteCache/bear/main'
 const app = express()
 
 app.use(express.static(path.join(__dirname, '../../dist')))
 
 app.get('/api/notes/:noteId', async ({ params: { noteId } }, res) => {
-  const note = `hello world from markdown ${noteId}`
-  extractBear()
-  res.send(note)
+  const note = await noteByUniqueId(noteId)
+  res.send(JSON.stringify(note))
 })
 
 app.get('/{*splat}', async (_req, res) => {
