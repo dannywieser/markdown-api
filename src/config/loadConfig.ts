@@ -1,4 +1,4 @@
-import { expandPath } from '@/util/file'
+import { expandPath } from '@/util'
 
 import config from './config.json'
 import { Config } from './config.types'

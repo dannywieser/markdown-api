@@ -1,4 +1,4 @@
-const fill = (length: number, char = ' ') => Array(length).fill(char).join('')
+const fill = (length: number, char: string) => Array(length).fill(char).join('')
 export const header1 = (headerText: string) => {
   const line = fill(headerText.length + 2, '-')
   console.info(`${line}\n# ${headerText}\n${line}\n`)
@@ -12,7 +12,7 @@ export const activity = (activityText: string, indent = 0) =>
 
 export const activityWithDetail = (
   activityText: string,
-  indent = 0,
+  indent: number,
   detail: string
 ) =>
   console.info(
