@@ -3,7 +3,7 @@ import fs from 'fs'
 
 import { asMock } from '@/testing-support'
 
-import { cleanBackups } from './backup'
+import { backupFile, cleanBackups } from './backup'
 
 jest.mock('fs')
 jest.mock('@/config')
@@ -24,7 +24,28 @@ beforeEach(() => {
   asMock(fs.unlinkSync).mockImplementation(() => {})
 })
 
-describe('the cleanupOldBackups function', () => {
+describe('the backupFile function', () => {
+  test('creates destination directory if it does not exist', () => {
+    backupFile('source.txt', '/mock/dest', '/mock/dest/file.txt')
+    expect(fs.existsSync).toHaveBeenCalledWith('/mock/dest')
+    expect(fs.mkdirSync).toHaveBeenCalledWith('/mock/dest')
+  })
+
+  test('copies the source file to the destination', () => {
+    backupFile('source.txt', '/mock/dest', '/mock/dest/file.txt')
+    expect(fs.copyFileSync).toHaveBeenCalledWith(
+      'source.txt',
+      '/mock/dest/file.txt'
+    )
+  })
+
+  test('returns the destination file path', () => {
+    const result = backupFile('source.txt', '/mock/dest', '/mock/dest/file.txt')
+    expect(result).toBe('/mock/dest/file.txt')
+  })
+})
+
+describe('the cleanBackups function', () => {
   test('takes no action if the number of backups is less than the maximum', () => {
     cleanBackups(backupPrefix, backupDir, 5)
 
