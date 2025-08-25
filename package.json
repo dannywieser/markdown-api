@@ -17,7 +17,7 @@
   "author": "Danny Wieser",
   "main": "dist/server.js",
   "scripts": {
-    "build": "tsc  && vite build ./src/web",
+    "build": "tsc && vite build ./src/web",
     "build-server": "tsc",
     "build-web": "vite build ./src/web",
     "start": "node ./dist/server/server.js",

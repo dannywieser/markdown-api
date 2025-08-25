@@ -1,28 +1,26 @@
-import { format } from 'date-fns'
-import fs from 'fs'
+import { loadConfig } from '@/config'
+import { backupFile, cleanBackups, dateWithHour } from '@/util'
 
-import { bearDatabase, rootDir } from '@/config'
-import { activityWithDetail } from '@/util/logging'
+const backupPrefix = 'bear-backup-'
+const backupDir = 'bear-backups'
+const extension = '.sqlite'
 
-const getBackupFileName = () =>
-  `bear-backup-${format(new Date(), 'yyyyMMdd-HH')}.sqlite`
+const getBackupFileName = () => `${backupPrefix}${dateWithHour()}${extension}`
 
 /**
  * Backup the Bear Database for safety.
- * This function will create a backup in the Root Directory.
- * Backups will be deleted based on the "backups" configuration setting - which indicates the number of copies to keep.
+ * This function will create a backup in the root project directory as defined in the configuration.
+ * The number of copies kept is defined in the configuration file.
+ *
+ * This function will also return the full path to the backed up file, as all operations take place against the backup, not the source.
  */
 export function backupBearDatabase() {
-  const destDir = `${rootDir()}/bear-backups`
+  const { bearDatabase, keepBackups, rootDir } = loadConfig()
+  const destDir = `${rootDir}/${backupDir}`
   const destFile = `${destDir}/${getBackupFileName()}`
 
-  if (!fs.existsSync(destDir)) {
-    fs.mkdirSync(destDir)
-  }
-  activityWithDetail('Backing up Bear database', 0, destFile)
-  fs.copyFileSync(bearDatabase(), destFile)
-
-  // TODO: cleanup old copies
+  backupFile(bearDatabase, destDir, destFile)
+  cleanBackups(backupPrefix, destDir, keepBackups)
 
   return destFile
 }
