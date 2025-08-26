@@ -9,16 +9,21 @@ import { activity } from './logging'
  */
 export function backupFile(
   sourceFile: string,
-  destDir: string,
-  destFile: string
+  targetDir: string,
+  targetFile: string
 ) {
-  if (!fs.existsSync(destDir)) {
-    fs.mkdirSync(destDir)
+  if (!fs.existsSync(sourceFile)) {
+    throw Error(`source file ${sourceFile} does not exist`)
   }
-  activity(`backup: ${sourceFile} -> ${destFile}`, 2)
-  fs.copyFileSync(sourceFile, destFile)
+  if (!fs.existsSync(targetDir)) {
+    fs.mkdirSync(targetDir, { recursive: true })
+  }
 
-  return destFile
+  const target = path.join(targetDir, targetFile)
+  activity(`backup: ${sourceFile} -> ${target}`, 2)
+  fs.copyFileSync(sourceFile, target)
+
+  return target
 }
 
 /**
@@ -26,7 +31,7 @@ export function backupFile(
  *
  * Backup files are identified by their prefix and extension.
  */
-export function cleanBackups(
+export function backupPrune(
   backupPrefix: string,
   backupDir: string,
   keep: number
@@ -42,7 +47,7 @@ export function cleanBackups(
 
   const filesToDelete = files.slice(keep)
   for (const file of filesToDelete) {
-    activity(`cleaning extra backup: ${file.name}`, 2)
+    activity(`pruning: ${file.name}`, 2)
     fs.unlinkSync(path.join(backupDir, file.name))
   }
 }

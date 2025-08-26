@@ -1,5 +1,7 @@
+import path from 'path'
+
 import { loadConfig } from '@/config'
-import { backupFile, cleanBackups, dateWithHour } from '@/util'
+import { backupFile, backupPrune, dateWithHour } from '@/util'
 
 const backupPrefix = 'bear-backup-'
 const backupDir = 'bear-backups'
@@ -16,11 +18,7 @@ const getBackupFileName = () => `${backupPrefix}${dateWithHour()}${extension}`
  */
 export function backupBearDatabase() {
   const { bearDatabase, keepBackups, rootDir } = loadConfig()
-  const destDir = `${rootDir}/${backupDir}`
-  const destFile = `${destDir}/${getBackupFileName()}`
-
-  backupFile(bearDatabase, destDir, destFile)
-  cleanBackups(backupPrefix, destDir, keepBackups)
-
-  return destFile
+  const destDir = path.join(rootDir, backupDir)
+  backupPrune(backupPrefix, destDir, keepBackups)
+  return backupFile(bearDatabase, destDir, getBackupFileName())
 }
