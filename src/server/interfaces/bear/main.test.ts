@@ -7,7 +7,7 @@ jest.mock('./database')
 
 const setupDatabaseMock = (noteText = 'this is the note text') => {
   const get = jest.fn().mockReturnValue({ ZTEXT: noteText })
-  asMock(loadDatabase).mockReturnValue({ get })
+  asMock(loadDatabase).mockResolvedValue({ get })
 }
 
 test('noteByUniqueId returns note object', async () => {
@@ -16,5 +16,5 @@ test('noteByUniqueId returns note object', async () => {
   const result = await noteByUniqueId('some-id')
 
   expect(result).toHaveProperty('note')
-  expect(result.note).toEqual('foo')
+  expect(result?.note).toEqual('foo')
 })

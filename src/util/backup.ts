@@ -13,7 +13,7 @@ export function backupFile(
   targetFile: string
 ) {
   if (!fs.existsSync(sourceFile)) {
-    throw Error(`source file ${sourceFile} does not exist`)
+    throw new Error(`source file ${sourceFile} does not exist`)
   }
   if (!fs.existsSync(targetDir)) {
     fs.mkdirSync(targetDir, { recursive: true })
