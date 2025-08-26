@@ -19,13 +19,18 @@ export default defineConfig([
     },
   },
 
-  globalIgnores(['dist']),
+  globalIgnores(['dist', 'dist-web']),
   tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
   perfectionist.configs['recommended-natural'],
   pluginPrettier,
   {
     rules: {
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_' },
+      ],
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       'perfectionist/sort-imports': 'error',
       'perfectionist/sort-interfaces': ['error'],
       'perfectionist/sort-objects': [
