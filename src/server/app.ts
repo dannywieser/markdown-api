@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { NextFunction, Request, Response } from 'express'
 import path from 'path'
 
 import { noteByUniqueId } from './interfaces/bear/main'
@@ -6,13 +6,28 @@ const app = express()
 
 app.use(express.static(path.join(__dirname, '../../dist-web')))
 
-app.get('/api/notes/:noteId', async ({ params: { noteId } }, res) => {
-  const note = await noteByUniqueId(noteId)
-  res.send(JSON.stringify(note))
+app.get('/api/notes/:noteId', async ({ params: { noteId } }, res, next) => {
+  try {
+    const result = await noteByUniqueId(noteId)
+    if (!result) {
+      return res
+        .status(404)
+        .json({ error: `note with ID '${noteId}' not found` })
+    }
+    res.json(result)
+  } catch (err) {
+    next(err)
+  }
 })
 
-app.get('/{*splat}', async (_req, res) => {
-  res.sendFile(path.join(__dirname, '../../dist-web/index.html'))
+// serve single page app
+const webPath = path.join(__dirname, '../../dist-web/index.html')
+app.get('/{*splat}', async (_req, res) => res.sendFile(webPath))
+
+// error handling
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+  console.error(err)
+  res.status(500).json({ error: 'Internal Server Error' })
 })
 
 export default app

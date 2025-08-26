@@ -15,10 +15,6 @@ jest.mock('@/util', () => ({
   expandPath: jest.fn((p: string) => `/expanded${p}`),
 }))
 
-beforeEach(() => {
-  jest.clearAllMocks()
-})
-
 describe('loadConfig', () => {
   test('rootDir returns expanded root directory', () => {
     expect(rootDir()).toBe('/expanded/mock/root')

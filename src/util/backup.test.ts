@@ -3,7 +3,7 @@ import fs from 'fs'
 
 import { asMock } from '@/testing-support'
 
-import { backupFile, cleanBackups } from './backup'
+import { backupFile, backupPrune } from './backup'
 
 jest.mock('fs')
 jest.mock('@/config')
@@ -13,26 +13,40 @@ const backupPrefix = 'backup-'
 const backupDir = 'backups/'
 
 beforeEach(() => {
-  jest.clearAllMocks()
-  asMock(fs.existsSync).mockReturnValue(false)
-  asMock(fs.readdirSync).mockReturnValue([])
   asMock(fs.statSync).mockImplementation((file: string) => {
     const split = file.split('-')
     const mtime = parse(split[1], 'yyyyMMdd', new Date())
     return { mtime }
   })
-  asMock(fs.unlinkSync).mockImplementation(() => {})
 })
 
 describe('the backupFile function', () => {
+  test('throws if the source file does not exist', () => {
+    asMock(fs.existsSync).mockReturnValueOnce(false)
+
+    expect(() => backupFile('source.txt', '/mock/dest', 'file.txt')).toThrow(
+      'source file source.txt does not exist'
+    )
+  })
+
   test('creates destination directory if it does not exist', () => {
-    backupFile('source.txt', '/mock/dest', '/mock/dest/file.txt')
+    // return true once for source file check
+    asMock(fs.existsSync).mockReturnValueOnce(true)
+    // but then false for the target directory
+    asMock(fs.existsSync).mockReturnValueOnce(false)
+
+    backupFile('source.txt', '/mock/dest', 'file.txt')
+
     expect(fs.existsSync).toHaveBeenCalledWith('/mock/dest')
-    expect(fs.mkdirSync).toHaveBeenCalledWith('/mock/dest')
+    expect(fs.mkdirSync).toHaveBeenCalledWith('/mock/dest', { recursive: true })
   })
 
   test('copies the source file to the destination', () => {
-    backupFile('source.txt', '/mock/dest', '/mock/dest/file.txt')
+    // source file and target dir both exist
+    asMock(fs.existsSync).mockReturnValue(true)
+
+    backupFile('source.txt', '/mock/dest', 'file.txt')
+
     expect(fs.copyFileSync).toHaveBeenCalledWith(
       'source.txt',
       '/mock/dest/file.txt'
@@ -40,14 +54,23 @@ describe('the backupFile function', () => {
   })
 
   test('returns the destination file path', () => {
-    const result = backupFile('source.txt', '/mock/dest', '/mock/dest/file.txt')
+    // source file and target dir both exist
+    asMock(fs.existsSync).mockReturnValue(true)
+
+    const result = backupFile('source.txt', '/mock/dest', 'file.txt')
+
     expect(result).toBe('/mock/dest/file.txt')
   })
 })
 
-describe('the cleanBackups function', () => {
+describe('the backupPrune function', () => {
   test('takes no action if the number of backups is less than the maximum', () => {
-    cleanBackups(backupPrefix, backupDir, 5)
+    asMock(fs.readdirSync).mockReturnValue([
+      'backup-20240105-11',
+      'backup-20240106-11',
+    ])
+
+    backupPrune(backupPrefix, backupDir, 5)
 
     expect(fs.unlinkSync).not.toHaveBeenCalled()
   })
@@ -62,7 +85,7 @@ describe('the cleanBackups function', () => {
       'backup-20240106-11',
     ])
 
-    cleanBackups(backupPrefix, backupDir, 5)
+    backupPrune(backupPrefix, backupDir, 5)
 
     expect(fs.unlinkSync).toHaveBeenCalledWith('backups/backup-20240101-02')
   })
@@ -79,7 +102,7 @@ describe('the cleanBackups function', () => {
       'backup-20240106-11',
     ])
 
-    cleanBackups(backupPrefix, backupDir, 5)
+    backupPrune(backupPrefix, backupDir, 5)
 
     expect(fs.unlinkSync).toHaveBeenCalledWith('backups/backup-20231230-02')
     expect(fs.unlinkSync).toHaveBeenCalledWith('backups/backup-20231231-02')

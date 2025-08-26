@@ -13,13 +13,13 @@ const mockDb = { db: true }
 const mockBackupFile = '/mock/path/to/backup.sqlite'
 
 beforeEach(() => {
-  jest.clearAllMocks()
   asMock(backupBearDatabase).mockReturnValue(mockBackupFile)
   asMock(open).mockResolvedValue(mockDb)
 })
 
 test('calls backupBearDatabase and opens the backup file', async () => {
   const db = await loadDatabase()
+
   expect(backupBearDatabase).toHaveBeenCalled()
   expect(open).toHaveBeenCalledWith({
     driver: sqlite3.Database,
