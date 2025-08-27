@@ -5,7 +5,7 @@ import { Config } from './config.types'
 
 export function loadConfig(): Config {
   const { bearConfig, fileConfig, mode, rootDir } = config as Config
-  const { dbPath, keepBackups = 5 } = bearConfig
+  const { dbPath, keepBackups } = bearConfig
   const { directory } = fileConfig
   return {
     ...config,
