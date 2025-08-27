@@ -8,8 +8,10 @@ jest.mock('@/util')
 jest.mock('@/config')
 
 const mockConfig = {
-  bearDatabase: '/path/to/beardb',
-  keepBackups: 2,
+  bearConfig: {
+    dbPath: '/path/to/beardb',
+    keepBackups: 2,
+  },
   rootDir: '/mock/root',
 }
 

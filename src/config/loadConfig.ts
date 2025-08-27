@@ -3,15 +3,15 @@ import { expandPath } from '@/util'
 import config from './config.json'
 import { Config } from './config.types'
 
-export const rootDir = () => expandPath(config.rootDirectory)
-export const bearDatabase = () => expandPath(config.bearDatabase)
-
 export function loadConfig(): Config {
-  const keepBackups = config.keepBackups ?? 5
+  const { bearConfig, fileConfig, mode, rootDir } = config as Config
+  const { dbPath, keepBackups = 5 } = bearConfig
+  const { directory } = fileConfig
   return {
     ...config,
-    bearDatabase: bearDatabase(),
-    keepBackups,
-    rootDir: rootDir(),
+    bearConfig: { dbPath: expandPath(dbPath), keepBackups },
+    fileConfig: { directory: expandPath(directory) },
+    mode,
+    rootDir: expandPath(rootDir),
   }
 }

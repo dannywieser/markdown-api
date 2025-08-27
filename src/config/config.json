@@ -1,5 +1,11 @@
 {
-  "keepBackups": 5,
-  "bearDatabase": "~/Library/Group Containers/9K33E3U3T4.net.shinyfrog.bear/Application Data/database.sqlite",
-  "rootDirectory": "~/markdown-memory"
+  "bearConfig": {
+    "keepBackups": 5,
+    "dbPath": "~/Library/Group Containers/9K33E3U3T4.net.shinyfrog.bear/Application Data/database.sqlite"
+  },
+  "fileConfig": {
+    "directory": "~/obsidian/demo"
+  },
+  "mode": "bear",
+  "rootDir": "~/markdown-memory"
 }

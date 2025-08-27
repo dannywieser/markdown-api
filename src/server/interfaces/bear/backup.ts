@@ -17,8 +17,11 @@ const getBackupFileName = () => `${backupPrefix}${dateWithHour()}${extension}`
  * This function will also return the full path to the backed up file, as all operations take place against the backup, not the source.
  */
 export function backupBearDatabase() {
-  const { bearDatabase, keepBackups, rootDir } = loadConfig()
+  const {
+    bearConfig: { dbPath, keepBackups },
+    rootDir,
+  } = loadConfig()
   const destDir = path.join(rootDir, backupDir)
   backupPrune(backupPrefix, destDir, keepBackups)
-  return backupFile(bearDatabase, destDir, getBackupFileName())
+  return backupFile(dbPath, destDir, getBackupFileName())
 }
