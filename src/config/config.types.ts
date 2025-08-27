@@ -6,7 +6,9 @@ export interface BearConfig {
 export interface Config {
   bearConfig: BearConfig
   fileConfig: FileConfig
+  host: string
   mode: 'bear' | 'file'
+  port: number
   rootDir: string
 }
 

@@ -7,5 +7,7 @@
     "directory": "~/obsidian/demo"
   },
   "mode": "bear",
-  "rootDir": "~/markdown-memory"
+  "rootDir": "~/markdown-memory",
+  "port": 3000,
+  "host": "localhost"
 }
