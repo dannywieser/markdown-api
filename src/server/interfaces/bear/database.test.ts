@@ -1,4 +1,4 @@
-import { open } from 'sqlite'
+import { Database, open } from 'sqlite'
 import * as sqlite3 from 'sqlite3'
 
 import { asMock } from '@/testing-support'
@@ -9,7 +9,7 @@ import { loadDatabase } from './database'
 jest.mock('./backup')
 jest.mock('sqlite')
 
-const mockDb = { db: true }
+const mockDb = { db: true } as unknown as Database
 const mockBackupFile = '/mock/path/to/backup.sqlite'
 
 beforeEach(() => {

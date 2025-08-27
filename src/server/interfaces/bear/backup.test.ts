@@ -1,5 +1,5 @@
 import { loadConfig } from '@/config'
-import { asMock } from '@/testing-support'
+import { asMock, mockConfig } from '@/testing-support'
 import { backupFile, backupPrune, dateWithHour } from '@/util'
 
 import { backupBearDatabase } from './backup'
@@ -7,16 +7,10 @@ import { backupBearDatabase } from './backup'
 jest.mock('@/util')
 jest.mock('@/config')
 
-const mockConfig = {
-  bearConfig: {
-    dbPath: '/path/to/beardb',
-    keepBackups: 2,
-  },
-  rootDir: '/mock/root',
-}
+const config = mockConfig()
 
 beforeEach(() => {
-  asMock(loadConfig).mockReturnValue(mockConfig)
+  asMock(loadConfig).mockReturnValue(config)
   asMock(dateWithHour).mockReturnValue('20240101-11')
 })
 

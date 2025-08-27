@@ -1,5 +1,7 @@
 /* istanbul ignore file */
 
+import { Config } from '@/config'
+
 /**
  * This is a helper which will cast a mock function to a jest.Mock to allow usage of the mock functions,
  * while at the same time enforcing the correct types for the function return value.
@@ -14,3 +16,18 @@
 export const asMock = <T extends (...args: any[]) => any>(
   mockTarget: T
 ): jest.MockedFunction<T> => mockTarget as jest.MockedFunction<T>
+
+export const mockConfig = (overrides?: Partial<Config>): Config => ({
+  bearConfig: {
+    dbPath: '/path/to/beardb',
+    keepBackups: 2,
+  },
+  fileConfig: {
+    directory: '/path/to/files',
+  },
+  host: 'localhost',
+  mode: 'bear',
+  port: 80,
+  rootDir: '/mock/root',
+  ...overrides,
+})

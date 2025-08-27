@@ -1,3 +1,5 @@
+import { Database } from 'sqlite'
+
 import { asMock } from '@/testing-support'
 
 import { loadDatabase } from './database'
@@ -7,7 +9,8 @@ jest.mock('./database')
 
 const setupDatabaseMock = (noteText = 'this is the note text') => {
   const get = jest.fn().mockReturnValue({ ZTEXT: noteText })
-  asMock(loadDatabase).mockResolvedValue({ get })
+  const mock = { get } as unknown as Database
+  asMock(loadDatabase).mockResolvedValue(mock)
 }
 
 test('noteByUniqueId returns note object', async () => {
