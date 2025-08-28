@@ -10,6 +10,7 @@ export default defineConfig([
   {
     extends: ['js/recommended'],
     files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    ignores: ['*.d.ts', '**/*.types.ts'],
     languageOptions: { globals: { ...globals.browser, ...globals.node } },
     plugins: { js },
     settings: {
@@ -30,7 +31,7 @@ export default defineConfig([
         'error',
         { argsIgnorePattern: '^_' },
       ],
-      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      'no-unused-vars': 'off',
       'perfectionist/sort-imports': 'error',
       'perfectionist/sort-interfaces': ['error'],
       'perfectionist/sort-objects': [

@@ -2,22 +2,51 @@ import { Database } from 'sqlite'
 
 import { asMock } from '@/testing-support'
 
-import { loadDatabase } from './database'
-import { noteByUniqueId } from './main'
+import { backupBearDatabase, loadDatabase } from './database'
+import { init, noteById } from './main'
 
 jest.mock('./database')
 
-const setupDatabaseMock = (noteText = 'this is the note text') => {
+const setupInitMock = (noteText = 'this is the note text') => {
   const get = jest.fn().mockReturnValue({ ZTEXT: noteText })
-  const mock = { get } as unknown as Database
-  asMock(loadDatabase).mockResolvedValue(mock)
+  const db = { get } as unknown as Database
+  return { db }
 }
 
-test('noteByUniqueId returns note object', async () => {
-  setupDatabaseMock('foo')
+describe('bear interface functions', () => {
+  test('init will backup the database and return a connection to the backup', async () => {
+    const mockDb = {} as Promise<Database>
+    asMock(backupBearDatabase).mockReturnValue('path/to/db')
+    asMock(loadDatabase).mockResolvedValue(mockDb)
 
-  const result = await noteByUniqueId('some-id')
+    const { db } = await init()
 
-  expect(result).toHaveProperty('note')
-  expect(result?.note).toEqual('foo')
+    expect(backupBearDatabase).toHaveBeenCalled()
+    expect(loadDatabase).toHaveBeenCalled()
+    expect(db).toBe(mockDb)
+  })
+
+  test('noteById returns note object', async () => {
+    const init = setupInitMock('foo')
+
+    const result = await noteById('some-id', init)
+
+    expect(result).toHaveProperty('note')
+    expect(result?.note).toEqual('foo')
+  })
+
+  test('noteById throws an error if the db is missing', async () => {
+    expect(async () => await noteById('some-id', {})).rejects.toThrow(
+      'database not ready'
+    )
+  })
+
+  test('noteById returns null if note is not found', async () => {
+    const init = setupInitMock('foo')
+    asMock(init.db.get).mockResolvedValue(undefined)
+
+    const result = await noteById('some-id', init)
+
+    expect(result).toBeNull()
+  })
 })

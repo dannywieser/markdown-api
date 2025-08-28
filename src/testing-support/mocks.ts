@@ -12,7 +12,7 @@ import { Config } from '@/config'
  *  asMock(foo).mockReturnValue(1); // Argument of type 'number' is not assignable to parameter of type 'boolean'
  */
 // we need to disable this because the jest MockedFunction type expects `...args: any[]) => any` as the base type for T
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const asMock = <T extends (...args: any[]) => any>(
   mockTarget: T
 ): jest.MockedFunction<T> => mockTarget as jest.MockedFunction<T>

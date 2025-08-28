@@ -1,30 +1,17 @@
 import express, { NextFunction, Request, Response } from 'express'
 import path from 'path'
 
-import { loadConfig } from '@/config'
-
-import * as bearMod from './interfaces/bear/main'
-import * as fileMod from './interfaces/file/main'
-
-const getMod = () => {
-  const { mode } = loadConfig()
-  if (mode === 'bear') {
-    return bearMod
-  }
-  if (mode === 'file') {
-    return fileMod
-  }
-  throw new Error('invalid mode')
-}
+import { loadInterface } from './interfaces/load'
 
 const app = express()
 
 app.use(express.static(path.join(__dirname, '../../dist-web')))
 
 app.get('/api/notes/:noteId', async ({ params: { noteId } }, res, next) => {
-  const mod = getMod()
+  const mode = loadInterface()
+  const init = await mode.init()
   try {
-    const result = await mod.noteByUniqueId(noteId)
+    const result = await mode.noteById(noteId, init)
     if (!result) {
       return res
         .status(404)
