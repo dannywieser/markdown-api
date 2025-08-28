@@ -12,5 +12,5 @@ export function loadInterface(): MarkdownInterfaceMode {
   if (mode === 'file') {
     return fileMod
   }
-  throw new Error('invalid mode')
+  throw new Error(`invalid mode: ${mode}`)
 }

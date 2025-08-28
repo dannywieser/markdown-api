@@ -1,41 +1,68 @@
 import request from 'supertest'
 
-import { asMock } from '../testing-support/mocks'
-import app from './app'
-import { noteByUniqueId } from './interfaces/bear/main'
+import { loadConfig } from '@/config'
 
+import { asMock, mockConfig } from '../testing-support/mocks'
+import app from './app'
+import * as bearMode from './interfaces/bear/main'
+import * as fileMode from './interfaces/file/main'
+
+jest.mock('@/config')
 jest.mock('./interfaces/bear/main')
+jest.mock('./interfaces/file/main')
 
 const mockNote = { note: 'text' }
 
-beforeEach(() => jest.spyOn(console, 'error').mockImplementation(() => {}))
-
-test('GET /api/notes/:noteId returns note JSON when found', async () => {
-  asMock(noteByUniqueId).mockResolvedValue(mockNote)
-
-  const response = await request(app).get('/api/notes/123')
-
-  expect(noteByUniqueId).toHaveBeenCalledWith('123')
-  expect(response.status).toBe(200)
-  expect(response.body).toEqual(mockNote)
+const config = mockConfig()
+beforeEach(() => {
+  asMock(loadConfig).mockReturnValue(config)
+  jest.spyOn(console, 'error').mockImplementation(() => {})
 })
 
-test('GET /api/notes/:noteId returns 404 when note not found', async () => {
-  asMock(noteByUniqueId).mockResolvedValue(undefined)
+describe('interface modes', () => {
+  test('loads the bear interface mode based on the configuration', async () => {
+    const bearConfig = mockConfig({ mode: 'bear' })
+    asMock(loadConfig).mockReturnValue(bearConfig)
 
-  const response = await request(app).get('/api/notes/999')
+    await request(app).get('/api/notes/123')
 
-  expect(response.status).toBe(404)
-  expect(response.body).toEqual({ error: "note with ID '999' not found" })
-})
+    expect(bearMode.init).toHaveBeenCalled()
+    expect(bearMode.noteById).toHaveBeenCalled()
 
-test('GET /api/notes/:noteId returns 500 on error', async () => {
-  asMock(noteByUniqueId).mockImplementation(() => {
-    throw new Error('Database error')
+    expect(fileMode.init).not.toHaveBeenCalled()
+    expect(fileMode.noteById).not.toHaveBeenCalled()
   })
 
-  const response = await request(app).get('/api/notes/123')
+  test('loads the file interface mode based on the configuration', async () => {
+    const fileConfig = mockConfig({ mode: 'file' })
+    asMock(loadConfig).mockReturnValue(fileConfig)
 
-  expect(response.status).toBe(500)
-  expect(response.body).toEqual({ error: 'Internal Server Error' })
+    await request(app).get('/api/notes/123')
+
+    expect(bearMode.init).not.toHaveBeenCalled()
+    expect(bearMode.noteById).not.toHaveBeenCalled()
+
+    expect(fileMode.init).toHaveBeenCalled()
+    expect(fileMode.noteById).toHaveBeenCalled()
+  })
+})
+
+describe('GET /api/notes/:noteId', () => {
+  test('returns note JSON when found', async () => {
+    asMock(bearMode.noteById).mockResolvedValue(mockNote)
+
+    const response = await request(app).get('/api/notes/123')
+
+    expect(response.status).toBe(200)
+    expect(response.body).toEqual(mockNote)
+  })
+
+  test('returns 404 when note not found', async () => {
+    asMock(bearMode.noteById).mockResolvedValue(null)
+
+    const response = await request(app).get('/api/notes/999')
+
+    expect(response.status).toBe(404)
+    expect(response.body).toEqual({ error: "note with ID '999' not found" })
+  })
 })
