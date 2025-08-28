@@ -1,14 +1,17 @@
 import express, { NextFunction, Request, Response } from 'express'
 import path from 'path'
 
-import { noteByUniqueId } from './interfaces/bear/main'
+import { loadInterface } from './interfaces/load'
+
 const app = express()
 
 app.use(express.static(path.join(__dirname, '../../dist-web')))
 
 app.get('/api/notes/:noteId', async ({ params: { noteId } }, res, next) => {
+  const mode = loadInterface()
+  const init = await mode.init()
   try {
-    const result = await noteByUniqueId(noteId)
+    const result = await mode.noteById(noteId, init)
     if (!result) {
       return res
         .status(404)

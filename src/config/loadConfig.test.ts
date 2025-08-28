@@ -1,12 +1,17 @@
-import { bearDatabase, loadConfig, rootDir } from './loadConfig'
+import { loadConfig } from './loadConfig'
 
 jest.mock(
   './config.json',
   () => ({
-    bearDatabase: '/mock/db.sqlite',
-    keepBackups: 3,
-    otherSetting: 'value',
-    rootDirectory: '/mock/root',
+    bearConfig: {
+      dbPath: '/mock/db.sqlite',
+      keepBackups: 3,
+    },
+    fileConfig: {
+      directory: '/path/to/files',
+    },
+    mode: 'bear',
+    rootDir: '/mock/root',
   }),
   { virtual: true }
 )
@@ -16,18 +21,12 @@ jest.mock('@/util', () => ({
 }))
 
 describe('loadConfig', () => {
-  test('rootDir returns expanded root directory', () => {
-    expect(rootDir()).toBe('/expanded/mock/root')
-  })
-
-  test('bearDatabase returns expanded bear database path', () => {
-    expect(bearDatabase()).toBe('/expanded/mock/db.sqlite')
-  })
-
-  test('loadConfig returns config with expanded paths and keepBackups', () => {
+  test('loadConfig returns config with expanded paths', () => {
     const result = loadConfig()
     expect(result.rootDir).toBe('/expanded/mock/root')
-    expect(result.bearDatabase).toBe('/expanded/mock/db.sqlite')
-    expect(result.keepBackups).toBe(3)
+    expect(result.bearConfig.dbPath).toBe('/expanded/mock/db.sqlite')
+    expect(result.bearConfig.keepBackups).toBe(3)
+    expect(result.fileConfig.directory).toBe('/expanded/path/to/files')
+    expect(result.mode).toBe('bear')
   })
 })
