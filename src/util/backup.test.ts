@@ -59,10 +59,7 @@ describe('the backupFile function', () => {
 
     backupFile('source.txt', '/mock/dest', 'file.txt')
 
-    expect(fs.copyFileSync).toHaveBeenCalledWith(
-      'source.txt',
-      '/mock/dest/file.txt'
-    )
+    expect(fs.copyFileSync).toHaveBeenCalledWith('source.txt', '/mock/dest/file.txt')
   })
 
   test('returns the destination file path', () => {

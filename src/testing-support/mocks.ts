@@ -13,9 +13,8 @@ import { Config } from '@/config'
  */
 // we need to disable this because the jest MockedFunction type expects `...args: any[]) => any` as the base type for T
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const asMock = <T extends (...args: any[]) => any>(
-  mockTarget: T
-): jest.MockedFunction<T> => mockTarget as jest.MockedFunction<T>
+export const asMock = <T extends (...args: any[]) => any>(mockTarget: T): jest.MockedFunction<T> =>
+  mockTarget as jest.MockedFunction<T>
 
 export const mockConfig = (overrides?: Partial<Config>): Config => ({
   bearConfig: {

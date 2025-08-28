@@ -36,9 +36,7 @@ describe('bear interface functions', () => {
   })
 
   test('noteById throws an error if the db is missing', async () => {
-    expect(async () => await noteById('some-id', {})).rejects.toThrow(
-      'database not ready'
-    )
+    expect(async () => await noteById('some-id', {})).rejects.toThrow('database not ready')
   })
 
   test('noteById returns null if note is not found', async () => {

@@ -13,11 +13,6 @@ export default defineConfig([
     ignores: ['*.d.ts', '**/*.types.ts'],
     languageOptions: { globals: { ...globals.browser, ...globals.node } },
     plugins: { js },
-    settings: {
-      react: {
-        version: 'detect',
-      },
-    },
   },
 
   globalIgnores(['dist', 'dist-web']),
@@ -27,10 +22,8 @@ export default defineConfig([
   pluginPrettier,
   {
     rules: {
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        { argsIgnorePattern: '^_' },
-      ],
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      'max-len': 'off',
       'no-unused-vars': 'off',
       'perfectionist/sort-imports': 'error',
       'perfectionist/sort-interfaces': ['error'],
@@ -41,6 +34,11 @@ export default defineConfig([
         },
       ],
       'react/react-in-jsx-scope': 'off',
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
     },
   },
 ])

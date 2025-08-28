@@ -10,16 +10,12 @@ afterEach(() => {
 
 test('header1 logs formatted header with single hash', () => {
   logging.header1('Test Header')
-  expect(console.info).toHaveBeenCalledWith(
-    expect.stringContaining('# Test Header')
-  )
+  expect(console.info).toHaveBeenCalledWith(expect.stringContaining('# Test Header'))
 })
 
 test('header2 logs formatted header with double hash', () => {
   logging.header2('Test Header')
-  expect(console.info).toHaveBeenCalledWith(
-    expect.stringContaining('## Test Header')
-  )
+  expect(console.info).toHaveBeenCalledWith(expect.stringContaining('## Test Header'))
 })
 
 test('activity logs activity text with indent', () => {
@@ -34,7 +30,5 @@ test('activity logs activity text with default indent', () => {
 
 test('activityWithDetail logs activity and detail with indent', () => {
   logging.activityWithDetail('Main activity', 2, 'Extra detail')
-  expect(console.info).toHaveBeenCalledWith(
-    '.. Main activity\n .... Extra detail'
-  )
+  expect(console.info).toHaveBeenCalledWith('.. Main activity\n .... Extra detail')
 })

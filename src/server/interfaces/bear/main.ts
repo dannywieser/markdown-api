@@ -14,9 +14,6 @@ export async function noteById(
   if (!db) {
     throw new Error('database not ready')
   }
-  const result = await db.get(
-    `SELECT ZTEXT FROM ZSFNOTE where ZUNIQUEIDENTIFIER=?`,
-    [noteId]
-  )
+  const result = await db.get(`SELECT ZTEXT FROM ZSFNOTE where ZUNIQUEIDENTIFIER=?`, [noteId])
   return result ? { note: result.ZTEXT } : null
 }
