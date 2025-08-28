@@ -66,3 +66,14 @@ describe('GET /api/notes/:noteId', () => {
     expect(response.body).toEqual({ error: "note with ID '999' not found" })
   })
 })
+
+test('returns 500 and error message when an error is thrown', async () => {
+  const fileConfig = mockConfig({ mode: 'file' })
+  asMock(loadConfig).mockReturnValue(fileConfig)
+
+  asMock(fileMode.noteById).mockRejectedValue('error')
+
+  const response = await request(app).get('/api/notes/any-id')
+  expect(response.status).toBe(500)
+  expect(response.body).toEqual({ error: 'Internal Server Error' })
+})

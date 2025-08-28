@@ -6,7 +6,7 @@
   "fileConfig": {
     "directory": "~/obsidian/demo"
   },
-  "mode": "file",
+  "mode": "bear",
   "rootDir": "~/markdown-memory",
   "port": 3100,
   "host": "localhost"
