@@ -13,9 +13,7 @@ app.get('/api/notes/:noteId', async ({ params: { noteId } }, res, next) => {
   try {
     const result = await mode.noteById(noteId, init)
     if (!result) {
-      return res
-        .status(404)
-        .json({ error: `note with ID '${noteId}' not found` })
+      return res.status(404).json({ error: `note with ID '${noteId}' not found` })
     }
     res.json(result)
   } catch (err) {

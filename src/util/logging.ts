@@ -10,11 +10,5 @@ export const header2 = (headerText: string) => {
 export const activity = (activityText: string, indent = 0) =>
   console.info(`${fill(indent, '.')} ${activityText}`)
 
-export const activityWithDetail = (
-  activityText: string,
-  indent: number,
-  detail: string
-) =>
-  console.info(
-    `${fill(indent, '.')} ${activityText}\n ${fill(indent + 2, '.')} ${detail}`
-  )
+export const activityWithDetail = (activityText: string, indent: number, detail: string) =>
+  console.info(`${fill(indent, '.')} ${activityText}\n ${fill(indent + 2, '.')} ${detail}`)
