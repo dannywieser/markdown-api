@@ -6,6 +6,7 @@ import { asMock, mockConfig } from '../testing-support/mocks'
 import app from './app'
 import * as bearMode from './interfaces/bear/main'
 import * as fileMode from './interfaces/file/main'
+import { MarkdownNote } from './interfaces/interfaces.types'
 
 jest.mock('@/marked/main', () => ({
   lexer: jest.fn(),
@@ -14,7 +15,7 @@ jest.mock('@/config')
 jest.mock('./interfaces/bear/main')
 jest.mock('./interfaces/file/main')
 
-const mockNote = { note: 'text' }
+const mockNote = {} as unknown as MarkdownNote
 
 const config = mockConfig()
 beforeEach(() => {
