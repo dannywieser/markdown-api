@@ -1,5 +1,7 @@
-import { lexer as markdownLexer } from 'marked'
+import marked, { Tokenizer } from 'marked'
 
+import { highlightExtension } from '@/marked/extensions/highlight'
+import { lexer } from '@/marked/main'
 import { convertDate } from '@/util'
 
 import { MarkdownInit, MarkdownNote } from '../interfaces.types'
@@ -23,18 +25,21 @@ export async function noteById(
     [noteId]
   )
 
+  if (!result) {
+    return result
+  }
+
   const {
     ZCREATIONDATE: creationDate,
     ZMODIFICATIONDATE: modificationDate,
     ZTEXT: noteText = '',
   } = result
-  const tokens = markdownLexer(noteText)
 
   return {
     created: convertDate(creationDate),
     id: noteId,
     modified: convertDate(modificationDate),
     source: 'bear',
-    tokens,
+    tokens: lexer(noteText),
   }
 }
