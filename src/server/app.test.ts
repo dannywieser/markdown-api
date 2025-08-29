@@ -7,6 +7,9 @@ import app from './app'
 import * as bearMode from './interfaces/bear/main'
 import * as fileMode from './interfaces/file/main'
 
+jest.mock('@/marked/main', () => ({
+  lexer: jest.fn(),
+}))
 jest.mock('@/config')
 jest.mock('./interfaces/bear/main')
 jest.mock('./interfaces/file/main')

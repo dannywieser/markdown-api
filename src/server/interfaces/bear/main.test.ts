@@ -1,16 +1,22 @@
+import { TokensList } from 'marked'
 import { Database } from 'sqlite'
 
+import { lexer } from '@/marked/main'
 import { asMock } from '@/testing-support'
+import { convertDate } from '@/util'
 
 import { backupBearDatabase, loadDatabase } from './database'
 import { init, noteById } from './main'
 
+jest.mock('@/marked/main', () => ({
+  lexer: jest.fn(),
+}))
 jest.mock('@/util')
 jest.mock('./database')
 jest.mock('./bear.util')
 
 const setupInitMock = (noteText = 'this is the note text') => {
-  const get = jest.fn().mockReturnValue({ ZTEXT: noteText })
+  const get = jest.fn().mockReturnValue({ ZCREATIONDATE: 4, ZMODIFICATIONDATE: 5, ZTEXT: noteText })
   const db = { get } as unknown as Database
   return { db }
 }
@@ -30,11 +36,17 @@ describe('bear interface functions', () => {
 
   test('noteById returns note object', async () => {
     const init = setupInitMock('foo')
+    const mockDate = new Date()
+    asMock(convertDate).mockReturnValue(mockDate)
+    asMock(lexer).mockReturnValue([] as unknown as TokensList)
 
     const result = await noteById('some-id', init)
 
-    expect(result).toHaveProperty('note')
-    expect(result?.note).toEqual('foo')
+    expect(result?.id).toBe('some-id')
+    expect(result?.tokens).toEqual([])
+    expect(result?.created).toEqual(mockDate)
+    expect(result?.modified).toEqual(mockDate)
+    expect(result?.source).toBe('bear')
   })
 
   test('noteById throws an error if the db is missing', async () => {

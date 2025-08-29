@@ -24,7 +24,7 @@ export async function noteById(
   )
 
   if (!result) {
-    return result
+    return null
   }
 
   const {

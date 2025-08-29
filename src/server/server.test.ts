@@ -3,6 +3,9 @@ import { activity, header1 } from '@/util/logging'
 import app from './app'
 import { startMessage, startup } from './server'
 
+jest.mock('@/marked/main', () => ({
+  lexer: jest.fn(),
+}))
 jest.mock('@/config', () => ({
   loadConfig: jest.fn(() => ({
     host: 'mdm',
