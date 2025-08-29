@@ -2,8 +2,8 @@ import { lexer } from '@/marked/main'
 import { convertDate } from '@/util'
 
 import { MarkdownInit, MarkdownNote } from '../interfaces.types'
+import handleWikiLinks from './bear.util'
 import { backupBearDatabase, loadDatabase } from './database'
-import handleWikiLinks from './util'
 
 export async function init(): Promise<MarkdownInit> {
   const backupFile = backupBearDatabase()

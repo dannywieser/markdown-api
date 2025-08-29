@@ -17,22 +17,23 @@ const getColor = (emoji: string = '🟡') => {
   }
 }
 
+const rule = /==([\p{Emoji}])([^\p{Emoji}=]+)==/u
+export const start = (src: string) => src.match(rule)?.index
+export const tokenizer = (src: string) => {
+  const match = rule.exec(src)
+  if (match) {
+    return {
+      color: getColor(match[1]),
+      raw: match[0],
+      text: match[2],
+      type: 'highlight',
+    }
+  }
+}
+
 export const highlightExtension: TokenizerExtension = {
   level: 'inline',
   name: 'Bear Highlight',
-  start(src: string) {
-    return src.match(/==([\p{Emoji}])([^\p{Emoji}=]+)==/u)?.index
-  },
-  tokenizer(src: string) {
-    const rule = /==([\p{Emoji}])([^\p{Emoji}=]+)==/u
-    const match = rule.exec(src)
-    if (match) {
-      return {
-        color: getColor(match[1]),
-        raw: match[0],
-        text: match[2],
-        type: 'highlight',
-      }
-    }
-  },
+  start,
+  tokenizer,
 }

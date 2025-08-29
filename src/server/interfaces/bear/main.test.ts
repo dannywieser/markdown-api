@@ -5,7 +5,9 @@ import { asMock } from '@/testing-support'
 import { backupBearDatabase, loadDatabase } from './database'
 import { init, noteById } from './main'
 
+jest.mock('@/util')
 jest.mock('./database')
+jest.mock('./bear.util')
 
 const setupInitMock = (noteText = 'this is the note text') => {
   const get = jest.fn().mockReturnValue({ ZTEXT: noteText })
