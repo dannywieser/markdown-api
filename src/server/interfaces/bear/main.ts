@@ -1,11 +1,9 @@
-import marked, { Tokenizer } from 'marked'
-
-import { highlightExtension } from '@/marked/extensions/highlight'
 import { lexer } from '@/marked/main'
 import { convertDate } from '@/util'
 
 import { MarkdownInit, MarkdownNote } from '../interfaces.types'
 import { backupBearDatabase, loadDatabase } from './database'
+import handleWikiLinks from './util'
 
 export async function init(): Promise<MarkdownInit> {
   const backupFile = backupBearDatabase()
@@ -35,11 +33,13 @@ export async function noteById(
     ZTEXT: noteText = '',
   } = result
 
+  const noteTextWithWikiLinks = await handleWikiLinks(noteText, db)
+
   return {
     created: convertDate(creationDate),
     id: noteId,
     modified: convertDate(modificationDate),
     source: 'bear',
-    tokens: lexer(noteText),
+    tokens: lexer(noteTextWithWikiLinks),
   }
 }

@@ -1,5 +1,5 @@
 import path from 'path'
-import { open } from 'sqlite'
+import { Database, open } from 'sqlite'
 import * as sqlite3 from 'sqlite3'
 
 import { loadConfig } from '@/config'
@@ -24,3 +24,6 @@ const driver = sqlite3.Database
 const sqliteOpen = async (filename: string) => open({ driver, filename })
 
 export const loadDatabase = async (dbPath: string) => await sqliteOpen(dbPath)
+
+export const noteByTitle = async (title: string, db: Database) =>
+  db.get(`SELECT ZUNIQUEIDENTIFIER FROM ZSFNOTE where ZTITLE=?`, [title])
