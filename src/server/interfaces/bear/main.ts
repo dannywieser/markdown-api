@@ -1,7 +1,5 @@
-import { marked } from 'marked'
 import { Database } from 'sqlite'
 
-import { highlightExtension, tagExtension } from '@/marked/extensions'
 import makeWikilinkExtension from '@/marked/extensions/wikilink'
 import { lexer } from '@/marked/main'
 import { convertDate } from '@/util'
