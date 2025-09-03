@@ -13,11 +13,13 @@ jest.mock('@/marked/main', () => ({
 }))
 jest.mock('@/util')
 jest.mock('./database')
-jest.mock('./bear.util')
 
 const setupInitMock = (noteText = 'this is the note text') => {
+  const all = jest
+    .fn()
+    .mockReturnValue([{ ZCREATIONDATE: 4, ZMODIFICATIONDATE: 5, ZTEXT: noteText }])
   const get = jest.fn().mockReturnValue({ ZCREATIONDATE: 4, ZMODIFICATIONDATE: 5, ZTEXT: noteText })
-  const db = { get } as unknown as Database
+  const db = { all, get } as unknown as Database
   return { db }
 }
 

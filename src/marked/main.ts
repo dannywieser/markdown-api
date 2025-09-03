@@ -1,10 +1,10 @@
-import { marked } from 'marked'
+import { marked, TokenizerExtension } from 'marked'
 
 import { highlightExtension, tagExtension } from './extensions'
 
-export function lexer(markdownText: string) {
+export function lexer(markdownText: string, extensions: TokenizerExtension[] = []) {
   marked.use({
-    extensions: [highlightExtension, tagExtension],
+    extensions: [highlightExtension, tagExtension, ...extensions],
   })
   return marked.lexer(markdownText)
 }

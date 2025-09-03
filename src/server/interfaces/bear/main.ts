@@ -3,6 +3,7 @@ import { Database } from 'sqlite'
 
 import { highlightExtension, tagExtension } from '@/marked/extensions'
 import makeWikilinkExtension from '@/marked/extensions/wikilink'
+import { lexer } from '@/marked/main'
 import { convertDate } from '@/util'
 
 import { MarkdownInit, MarkdownNote } from '../interfaces.types'
@@ -39,16 +40,13 @@ export async function noteById(
 
   const cache = await noteCache(db)
   const wikilinksExtension = makeWikilinkExtension(cache)
-  marked.use({
-    extensions: [highlightExtension, tagExtension, wikilinksExtension],
-  })
 
   return {
     created: convertDate(creationDate),
     id: noteId,
     modified: convertDate(modificationDate),
     source: 'bear',
-    tokens: marked.lexer(noteText),
+    tokens: lexer(noteText, [wikilinksExtension]),
   }
 }
 
