@@ -15,48 +15,35 @@ export async function init(): Promise<MarkdownInit> {
 }
 
 export async function noteById(
-  noteId: string,
+  findNoteId: string,
   { db = undefined }: MarkdownInit
 ): Promise<MarkdownNote | null> {
   if (!db) {
     throw new Error('database not ready')
   }
-  const result = await db.get(
-    `SELECT ZTEXT, ZMODIFICATIONDATE, ZCREATIONDATE  FROM ZSFNOTE where ZUNIQUEIDENTIFIER=?`,
-    [noteId]
-  )
-
-  if (!result) {
-    return null
-  }
-
-  const {
-    ZCREATIONDATE: creationDate,
-    ZMODIFICATIONDATE: modificationDate,
-    ZTEXT: noteText = '',
-  } = result
-
+  // TODO: this should be cached and only do DB queries if there is a change
   const cache = await noteCache(db)
-  const wikilinksExtension = makeWikilinkExtension(cache)
-
-  return {
-    created: convertDate(creationDate),
-    id: noteId,
-    modified: convertDate(modificationDate),
-    source: 'bear',
-    tokens: lexer(noteText, [wikilinksExtension]),
+  const note = cache.find(({ id }) => id === findNoteId)
+  if (note) {
+    const wikilinksExtension = makeWikilinkExtension(cache)
+    return {
+      ...note,
+      tokens: lexer(note.text, [wikilinksExtension]),
+    }
+  } else {
+    return null
   }
 }
 
-export async function noteCache(db: Database): Promise<MarkdownNote[]> {
+async function noteCache(db: Database): Promise<MarkdownNote[]> {
   const rawNotes: BearNote[] = await db.all(`SELECT * FROM ZSFNOTE`)
   return rawNotes.map(({ ZCREATIONDATE, ZMODIFICATIONDATE, ZTEXT, ZTITLE, ZUNIQUEIDENTIFIER }) => ({
     created: convertDate(ZCREATIONDATE),
     id: ZUNIQUEIDENTIFIER,
     modified: convertDate(ZMODIFICATIONDATE),
-    noteText: ZTEXT,
     noteUrl: `/note/${ZUNIQUEIDENTIFIER}`,
     source: 'bear',
+    text: ZTEXT,
     title: ZTITLE,
   }))
 }

@@ -30,3 +30,11 @@ export const mockConfig = (overrides?: Partial<Config>): Config => ({
   rootDir: '/mock/root',
   ...overrides,
 })
+
+export const mockBearNote = (id = 'abc123') => ({
+  ZCREATIONDATE: 4,
+  ZMODIFICATIONDATE: 5,
+  ZTEXT: `${id} text`,
+  ZTITLE: `${id} title`,
+  ZUNIQUEIDENTIFIER: id,
+})

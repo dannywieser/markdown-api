@@ -20,7 +20,8 @@ export interface MarkdownNote {
   modified: Date
   noteUrl?: string
   source: MarkdownNoteSource
-  title?: string
+  text: string
+  title: string
   tokens?: CustomTokensList
 }
 
