@@ -18,8 +18,10 @@ export interface MarkdownNote {
   created: Date
   id: string
   modified: Date
+  noteUrl?: string
   source: MarkdownNoteSource
-  tokens: CustomTokensList
+  title?: string
+  tokens?: CustomTokensList
 }
 
 export type MarkdownNoteSource = 'bear' | 'file'
