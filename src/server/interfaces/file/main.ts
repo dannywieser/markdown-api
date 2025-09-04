@@ -19,6 +19,8 @@ export async function noteById(
 
   const note = await readFile(path.join(directory, `${fileName}.md`))
 
-  // TODO: file mode with create / modified date
+  // TODO
+  //  - file mode with create / modified date
+  //  - load all notes into cache and include wikilinks extension
   return note ? ({} as unknown as MarkdownNote) : null
 }

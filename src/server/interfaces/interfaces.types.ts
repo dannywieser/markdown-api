@@ -1,12 +1,10 @@
 import { TokensList } from 'marked'
-import { Database } from 'sqlite'
-
 export interface CustomTokensList extends TokensList {
   foo?: string
 }
 
 export interface MarkdownInit {
-  db?: Database
+  allNotes?: MarkdownNote[]
 }
 
 export interface MarkdownInterfaceMode {

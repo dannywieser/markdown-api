@@ -1,6 +1,9 @@
-import { marked, TokenizerExtension } from 'marked'
+import { marked } from 'marked'
+
+import { mockMarkdownNote } from '@/testing-support'
 
 import { highlightExtension, tagExtension } from './extensions'
+import { makeWikilinkExtension } from './extensions/wikilink'
 import { lexer } from './main'
 
 jest.mock('marked', () => ({
@@ -10,33 +13,29 @@ jest.mock('marked', () => ({
   },
 }))
 
-jest.mock('./extensions', () => ({
+jest.mock('./extensions/highlight', () => ({
   highlightExtension: { name: 'highlight' },
+}))
+jest.mock('./extensions/tag', () => ({
   tagExtension: { name: 'tag' },
 }))
+jest.mock('./extensions/wikilink', () => ({
+  makeWikilinkExtension: jest.fn().mockReturnValue({ name: 'wikilink' }),
+}))
+
+const notes = [mockMarkdownNote('a'), mockMarkdownNote('b')]
 
 describe('lexer', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
-  test('calls marked.use with default extensions', () => {
-    lexer('some markdown')
+  test('calls marked.use with highlight, tag, and wikilink extensions', () => {
+    lexer('some markdown', notes)
+    expect(makeWikilinkExtension).toHaveBeenCalledWith(notes)
     expect(marked.use).toHaveBeenCalledWith({
-      extensions: [highlightExtension, tagExtension],
-    })
-  })
-
-  test('calls marked.use with additional extensions', () => {
-    const extraExtension = { name: 'extra' } as unknown as TokenizerExtension
-    lexer('some markdown', [extraExtension])
-    expect(marked.use).toHaveBeenCalledWith({
-      extensions: [highlightExtension, tagExtension, extraExtension],
+      extensions: [highlightExtension, tagExtension, { name: 'wikilink' }],
     })
   })
 
   test('returns tokens from marked.lexer', () => {
-    const result = lexer('some markdown')
+    const result = lexer('some markdown', notes)
     expect(marked.lexer).toHaveBeenCalledWith('some markdown')
     expect(result).toEqual(['token1', 'token2'])
   })

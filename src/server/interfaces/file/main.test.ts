@@ -12,9 +12,9 @@ jest.mock('path', () => ({
 
 describe('bear interface functions', () => {
   test('init is no-op', async () => {
-    const { db } = await init()
+    const { allNotes } = await init()
 
-    expect(db).not.toBeDefined()
+    expect(allNotes).not.toBeDefined()
   })
 
   test('file path is correctly built based on config', async () => {

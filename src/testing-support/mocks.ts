@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 
 import { Config } from '@/config'
+import { MarkdownNote } from '@/server/interfaces/interfaces.types'
 
 /**
  * This is a helper which will cast a mock function to a jest.Mock to allow usage of the mock functions,
@@ -37,4 +38,13 @@ export const mockBearNote = (id = 'abc123') => ({
   ZTEXT: `${id} text`,
   ZTITLE: `${id} title`,
   ZUNIQUEIDENTIFIER: id,
+})
+
+export const mockMarkdownNote = (id = 'abc123'): MarkdownNote => ({
+  created: new Date(),
+  id,
+  modified: new Date(),
+  source: 'file',
+  text: id,
+  title: `title ${id}`,
 })

@@ -2,7 +2,7 @@ import { TokenizerExtension } from 'marked'
 
 import { MarkdownNote } from '@/server/interfaces/interfaces.types'
 
-export default function makeWikilinkExtension(noteCache: MarkdownNote[]): TokenizerExtension {
+export function makeWikilinkExtension(noteCache: MarkdownNote[]): TokenizerExtension {
   const rule = /\[\[(.+?)\]\]/u
   const start = (src: string) => src.match(rule)?.index
   const tokenizer = (src: string) => {

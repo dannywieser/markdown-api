@@ -1,6 +1,6 @@
 import { MarkdownNote } from '@/server/interfaces/interfaces.types'
 
-import makeWikilinkExtension from './wikilink'
+import { makeWikilinkExtension } from './wikilink'
 
 const noteCache = [
   { id: 'abc123', noteUrl: '/path/to/abc123', title: 'NoteOne' },
