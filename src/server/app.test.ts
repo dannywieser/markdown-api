@@ -11,7 +11,17 @@ import { MarkdownNote } from './interfaces/interfaces.types'
 jest.mock('@/marked/main', () => ({
   lexer: jest.fn(),
 }))
-jest.mock('@/config')
+jest.mock('@/config', () => ({
+  loadConfig: jest.fn(() => ({
+    fileConfig: {
+      directory: '/dir',
+    },
+    host: 'mdm',
+    mode: 'bear',
+    port: 80,
+    rootDir: '/mock/root',
+  })),
+}))
 jest.mock('./interfaces/bear/main')
 jest.mock('./interfaces/file/main')
 

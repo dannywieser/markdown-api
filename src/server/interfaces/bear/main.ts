@@ -19,7 +19,7 @@ export async function noteById(
   return note
     ? {
         ...note,
-        tokens: lexer(note.text, allNotes),
+        tokens: lexer(note.text ?? '', allNotes),
       }
     : null
 }

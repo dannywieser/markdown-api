@@ -19,10 +19,6 @@ jest.mock('./noteCache')
 jest.mock('@/marked/main')
 
 describe('bear interface functions', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
   test('init backs up the database, loads it, and returns allNotes', async () => {
     asMock(backupBearDatabase).mockReturnValue('backup.sqlite')
     const mockDb = {} as Database

@@ -8,6 +8,9 @@ jest.mock('@/marked/main', () => ({
 }))
 jest.mock('@/config', () => ({
   loadConfig: jest.fn(() => ({
+    fileConfig: {
+      directory: '/dir',
+    },
     host: 'mdm',
     mode: 'bear',
     port: 80,
