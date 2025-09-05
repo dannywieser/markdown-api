@@ -1,7 +1,6 @@
 import js from '@eslint/js'
 import perfectionist from 'eslint-plugin-perfectionist'
 import pluginPrettier from 'eslint-plugin-prettier/recommended'
-import pluginReact from 'eslint-plugin-react'
 import { defineConfig, globalIgnores } from 'eslint/config'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
@@ -17,7 +16,6 @@ export default defineConfig([
 
   globalIgnores(['dist', 'dist-web']),
   tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
   perfectionist.configs['recommended-natural'],
   pluginPrettier,
   {
@@ -33,7 +31,6 @@ export default defineConfig([
           type: 'alphabetical',
         },
       ],
-      'react/react-in-jsx-scope': 'off',
     },
     settings: {
       react: {
