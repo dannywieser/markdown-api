@@ -1,6 +1,6 @@
 {
   "name": "@dannywieser/markdown-api",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "keywords": [
     "markdown"
   ],
@@ -16,6 +16,12 @@
   "license": "MIT",
   "author": "Danny Wieser",
   "main": "dist/server.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "start": "node ./dist/server/server.js",
