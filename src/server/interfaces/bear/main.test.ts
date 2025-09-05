@@ -1,50 +1,54 @@
+import { TokensList } from 'marked'
 import { Database } from 'sqlite'
 
-import { asMock } from '@/testing-support'
+import { lexer } from '@/marked/main'
+import { asMock, mockMarkdownNote } from '@/testing-support'
 
 import { backupBearDatabase, loadDatabase } from './database'
 import { init, noteById } from './main'
+import { noteCache } from './noteCache'
 
+jest.mock('marked', () => ({
+  marked: {
+    lexer: jest.fn(() => ['token1', 'token2']),
+    use: jest.fn(),
+  },
+}))
 jest.mock('./database')
-
-const setupInitMock = (noteText = 'this is the note text') => {
-  const get = jest.fn().mockReturnValue({ ZTEXT: noteText })
-  const db = { get } as unknown as Database
-  return { db }
-}
+jest.mock('./noteCache')
+jest.mock('@/marked/main')
 
 describe('bear interface functions', () => {
-  test('init will backup the database and return a connection to the backup', async () => {
-    const mockDb = {} as Promise<Database>
-    asMock(backupBearDatabase).mockReturnValue('path/to/db')
+  test('init backs up the database, loads it, and returns allNotes', async () => {
+    asMock(backupBearDatabase).mockReturnValue('backup.sqlite')
+    const mockDb = {} as Database
     asMock(loadDatabase).mockResolvedValue(mockDb)
+    const notes = [mockMarkdownNote('a'), mockMarkdownNote('b')]
+    asMock(noteCache).mockResolvedValue(notes)
 
-    const { db } = await init()
-
+    const result = await init()
     expect(backupBearDatabase).toHaveBeenCalled()
-    expect(loadDatabase).toHaveBeenCalled()
-    expect(db).toBe(mockDb)
+    expect(loadDatabase).toHaveBeenCalledWith('backup.sqlite')
+    expect(noteCache).toHaveBeenCalledWith(mockDb)
+    expect(result).toEqual({ allNotes: notes })
   })
 
-  test('noteById returns note object', async () => {
-    const init = setupInitMock('foo')
+  test('noteById returns note with tokens when found', async () => {
+    const allNotes = [mockMarkdownNote('abc'), mockMarkdownNote('def')]
+    const tokens = ['token'] as unknown as TokensList
+    asMock(lexer).mockReturnValue(tokens)
 
-    const result = await noteById('some-id', init)
-
-    expect(result).toHaveProperty('note')
-    expect(result?.note).toEqual('foo')
+    const result = await noteById('abc', { allNotes })
+    expect(result).toEqual({
+      ...allNotes[0],
+      tokens: tokens,
+    })
+    expect(lexer).toHaveBeenCalledWith('abc', allNotes)
   })
 
-  test('noteById throws an error if the db is missing', async () => {
-    expect(async () => await noteById('some-id', {})).rejects.toThrow('database not ready')
-  })
-
-  test('noteById returns null if note is not found', async () => {
-    const init = setupInitMock('foo')
-    asMock(init.db.get).mockResolvedValue(undefined)
-
-    const result = await noteById('some-id', init)
-
+  test('noteById returns null when note not found', async () => {
+    const allNotes = [mockMarkdownNote('abc'), mockMarkdownNote('efg')]
+    const result = await noteById('def', { allNotes })
     expect(result).toBeNull()
   })
 })

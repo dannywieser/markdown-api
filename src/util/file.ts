@@ -4,11 +4,9 @@ import path from 'path'
 
 import { activity } from './logging'
 
-/**
- * Given a file path, will expand a ~ home directory shortcut (if present).
- */
+const HOMEDIR_ALIAS = '~'
 export const expandPath = (userPath: string): string =>
-  userPath.startsWith('~')
+  userPath.startsWith(HOMEDIR_ALIAS)
     ? path.join(os.homedir(), userPath.slice(1).replace(/^\/+/, ''))
     : userPath
 

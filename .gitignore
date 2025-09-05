@@ -2,3 +2,4 @@ coverage
 dist
 dist-web
 node_modules
+.DS_Store

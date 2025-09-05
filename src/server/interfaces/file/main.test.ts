@@ -1,45 +1,62 @@
-import { loadConfig } from '@/config'
-import { asMock, mockConfig } from '@/testing-support'
+import { TokensList } from 'marked'
+
+import { lexer } from '@/marked/main'
+import { asMock, mockMarkdownNote } from '@/testing-support'
 import { readFile } from '@/util'
 
 import { init, noteById } from './main'
+import { noteCache } from './noteCache'
 
-jest.mock('@/config')
-jest.mock('@/util')
+jest.mock('marked', () => ({
+  marked: {
+    lexer: jest.fn(() => ['token1', 'token2']),
+    use: jest.fn(),
+  },
+}))
 jest.mock('path', () => ({
-  join: jest.fn((...args: string[]) => args.join('/')),
+  join: jest.fn((...args) => args.join('/')),
+}))
+jest.mock('./noteCache')
+jest.mock('@/marked/main')
+jest.mock('@/util')
+jest.mock('@/config', () => ({
+  loadConfig: jest.fn().mockReturnValue({
+    fileConfig: {
+      directory: '/path/to/files',
+    },
+  }),
 }))
 
-describe('bear interface functions', () => {
-  test('init is no-op', async () => {
-    const { db } = await init()
+describe('file interface functions', () => {
+  test('init retrieves basic information about all notes', async () => {
+    const notes = [mockMarkdownNote('a'), mockMarkdownNote('b')]
+    asMock(noteCache).mockResolvedValue(notes)
 
-    expect(db).not.toBeDefined()
+    const result = await init()
+
+    expect(result).toEqual({ allNotes: notes })
   })
 
-  test('file path is correctly built based on config', async () => {
-    const config = mockConfig()
-    asMock(loadConfig).mockReturnValue(config)
-    asMock(readFile).mockResolvedValue('foo')
+  test('noteById reads file content and tokenizes it if a match is found', async () => {
+    const allNotes = [mockMarkdownNote('abc'), mockMarkdownNote('def')]
+    const tokens = ['token'] as unknown as TokensList
+    asMock(lexer).mockReturnValue(tokens)
+    asMock(readFile).mockResolvedValue('readFile result')
 
-    await noteById('some-id', {})
+    const result = await noteById('abc', { allNotes })
 
-    expect(readFile).toHaveBeenCalledWith('/path/to/files/some-id.md')
+    expect(readFile).toHaveBeenCalledWith('/path/to/files/abc.md')
+    expect(result).toEqual({
+      ...allNotes[0],
+      tokens: tokens,
+    })
+    expect(lexer).toHaveBeenCalledWith('readFile result', allNotes)
   })
 
-  test('noteById returns note text read from file', async () => {
-    asMock(readFile).mockResolvedValue('foo')
+  test('noteById returns null when note not found', async () => {
+    const allNotes = [mockMarkdownNote('abc'), mockMarkdownNote('efg')]
 
-    const result = await noteById('some-id', {})
-
-    expect(result).toHaveProperty('note')
-    expect(result?.note).toEqual('foo')
-  })
-
-  test('noteById returns null if note is not found', async () => {
-    asMock(readFile).mockResolvedValue(null)
-
-    const result = await noteById('some-id', {})
+    const result = await noteById('def', { allNotes })
 
     expect(result).toBeNull()
   })
