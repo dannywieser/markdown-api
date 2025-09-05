@@ -1,7 +1,6 @@
 import { marked } from 'marked'
 
-import { mockMarkdownNote } from '@/testing-support'
-
+import { mockMarkdownNote } from '../testing-support'
 import { highlightExtension, tagExtension } from './extensions'
 import { makeWikilinkExtension } from './extensions/wikilink'
 import { lexer } from './main'

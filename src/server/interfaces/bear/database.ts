@@ -2,8 +2,8 @@ import path from 'path'
 import { open } from 'sqlite'
 import * as sqlite3 from 'sqlite3'
 
-import { loadConfig } from '@/config'
-import { backupFile, backupPrune, dateWithHour } from '@/util'
+import { loadConfig } from '../../../config'
+import { backupFile, backupPrune, dateWithHour } from '../../../util'
 
 const backupPrefix = 'bear-backup-'
 const backupDir = 'bear-backups'

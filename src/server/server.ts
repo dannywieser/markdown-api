@@ -1,6 +1,5 @@
-import { loadConfig } from '@/config'
-import { activity, header1 } from '@/util/logging'
-
+import { loadConfig } from '../config'
+import { activity, header1 } from '../util/logging'
 import app from './app'
 
 const { host, mode, port, rootDir } = loadConfig()

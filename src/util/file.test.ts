@@ -1,7 +1,6 @@
 import fs from 'fs/promises'
 
-import { asMock } from '@/testing-support/mocks'
-
+import { asMock } from '../testing-support/mocks'
 import { expandPath } from './file'
 import { isNotFoundError } from './file'
 import { readFile } from './file'

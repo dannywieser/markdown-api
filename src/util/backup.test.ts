@@ -1,8 +1,7 @@
 import { parse } from 'date-fns'
 import fs, { Dirent, PathLike, Stats, StatSyncOptions } from 'fs'
 
-import { asMock } from '@/testing-support'
-
+import { asMock } from '../testing-support'
 import { backupFile, backupPrune } from './backup'
 
 jest.mock('fs')

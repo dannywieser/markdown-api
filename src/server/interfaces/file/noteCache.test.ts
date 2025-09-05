@@ -2,8 +2,7 @@ import { Dirent, Stats } from 'fs'
 import fs from 'fs/promises'
 import path from 'path'
 
-import { asMock } from '@/testing-support'
-
+import { asMock } from '../../../testing-support'
 import { noteCache } from './noteCache'
 
 jest.mock('fs/promises')

@@ -1,9 +1,8 @@
 import path from 'path'
 
-import { loadConfig } from '@/config'
-import { lexer } from '@/marked/main'
-import { readFile } from '@/util'
-
+import { loadConfig } from '../../../config'
+import { lexer } from '../../../marked/main'
+import { readFile } from '../../../util'
 import { MarkdownInit, MarkdownNote } from '../interfaces.types'
 import { noteCache } from './noteCache'
 

@@ -1,5 +1,4 @@
-import { lexer } from '@/marked/main'
-
+import { lexer } from '../../../marked/main'
 import { MarkdownInit, MarkdownNote } from '../interfaces.types'
 import { backupBearDatabase, loadDatabase } from './database'
 import { noteCache } from './noteCache'

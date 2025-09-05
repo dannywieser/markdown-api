@@ -1,7 +1,6 @@
 import { Database } from 'sqlite'
 
-import { convertDate } from '@/util'
-
+import { convertDate } from '../../../util'
 import { MarkdownNote } from '../interfaces.types'
 import { BearNote } from './bear.types'
 

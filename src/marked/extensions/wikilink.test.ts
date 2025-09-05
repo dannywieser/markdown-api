@@ -1,5 +1,4 @@
-import { MarkdownNote } from '@/server/interfaces/interfaces.types'
-
+import { MarkdownNote } from '../../server/interfaces/interfaces.types'
 import { makeWikilinkExtension } from './wikilink'
 
 const noteCache = [

@@ -1,9 +1,8 @@
 import { TokensList } from 'marked'
 
-import { lexer } from '@/marked/main'
-import { asMock, mockMarkdownNote } from '@/testing-support'
-import { readFile } from '@/util'
-
+import { lexer } from '../../../marked/main'
+import { asMock, mockMarkdownNote } from '../../../testing-support'
+import { readFile } from '../../../util'
 import { init, noteById } from './main'
 import { noteCache } from './noteCache'
 
@@ -17,9 +16,9 @@ jest.mock('path', () => ({
   join: jest.fn((...args) => args.join('/')),
 }))
 jest.mock('./noteCache')
-jest.mock('@/marked/main')
-jest.mock('@/util')
-jest.mock('@/config', () => ({
+jest.mock('../../../marked/main')
+jest.mock('../../../util')
+jest.mock('../../../config', () => ({
   loadConfig: jest.fn().mockReturnValue({
     fileConfig: {
       directory: '/path/to/files',
