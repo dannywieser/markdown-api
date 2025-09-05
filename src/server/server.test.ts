@@ -1,5 +1,4 @@
-import { activity, header1 } from '@/util/logging'
-
+import { activity, header1 } from '../util/logging'
 import app from './app'
 import { startMessage, startup } from './server'
 

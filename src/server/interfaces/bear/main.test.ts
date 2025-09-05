@@ -1,9 +1,8 @@
 import { TokensList } from 'marked'
 import { Database } from 'sqlite'
 
-import { lexer } from '@/marked/main'
-import { asMock, mockMarkdownNote } from '@/testing-support'
-
+import { lexer } from '../../../marked/main'
+import { asMock, mockMarkdownNote } from '../../../testing-support'
 import { backupBearDatabase, loadDatabase } from './database'
 import { init, noteById } from './main'
 import { noteCache } from './noteCache'
@@ -16,7 +15,7 @@ jest.mock('marked', () => ({
 }))
 jest.mock('./database')
 jest.mock('./noteCache')
-jest.mock('@/marked/main')
+jest.mock('../../../marked/main')
 
 describe('bear interface functions', () => {
   test('init backs up the database, loads it, and returns allNotes', async () => {

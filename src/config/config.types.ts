@@ -1,4 +1,4 @@
-import { MarkdownNoteSource } from '@/server/interfaces/interfaces.types'
+import { MarkdownNoteSource } from '../server/interfaces/interfaces.types'
 
 export interface BearConfig {
   dbPath: string

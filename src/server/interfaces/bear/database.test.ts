@@ -1,10 +1,9 @@
 import { Database, open } from 'sqlite'
 import * as sqlite3 from 'sqlite3'
 
-import { loadConfig } from '@/config'
-import { asMock, mockConfig } from '@/testing-support'
-import { backupFile, backupPrune, dateWithHour } from '@/util'
-
+import { loadConfig } from '../../../config'
+import { asMock, mockConfig } from '../../../testing-support'
+import { backupFile, backupPrune, dateWithHour } from '../../../util'
 import { backupBearDatabase, loadDatabase } from './database'
 
 jest.mock('sqlite')

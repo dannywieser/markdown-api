@@ -1,7 +1,6 @@
 import request from 'supertest'
 
-import { loadConfig } from '@/config'
-
+import { loadConfig } from '../config'
 import { asMock, mockConfig } from '../testing-support/mocks'
 import app from './app'
 import * as bearMode from './interfaces/bear/main'

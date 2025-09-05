@@ -1,6 +1,5 @@
-import { Config, loadConfig } from '@/config'
-import { asMock, mockConfig } from '@/testing-support'
-
+import { Config, loadConfig } from '../../config'
+import { asMock, mockConfig } from '../../testing-support'
 import { loadInterface } from './load'
 
 jest.mock('@/config')

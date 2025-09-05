@@ -1,8 +1,7 @@
 import { Database } from 'sqlite'
 
-import { asMock, mockBearNote } from '@/testing-support/mocks'
-import { convertDate } from '@/util'
-
+import { asMock, mockBearNote } from '../../../testing-support/mocks'
+import { convertDate } from '../../../util'
 import { noteCache } from './noteCache'
 
 jest.mock('@/util', () => ({

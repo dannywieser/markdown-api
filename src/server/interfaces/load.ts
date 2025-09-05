@@ -1,5 +1,4 @@
-import { loadConfig } from '@/config'
-
+import { loadConfig } from '../../config'
 import * as bearMod from './bear/main'
 import * as fileMod from './file/main'
 import { MarkdownInterfaceMode } from './interfaces.types'

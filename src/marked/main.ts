@@ -1,7 +1,6 @@
 import { marked } from 'marked'
 
-import { MarkdownNote } from '@/server/interfaces/interfaces.types'
-
+import { MarkdownNote } from '../server/interfaces/interfaces.types'
 import { highlightExtension, tagExtension } from './extensions'
 import { makeWikilinkExtension } from './extensions/wikilink'
 
