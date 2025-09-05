@@ -42,7 +42,7 @@ describe('wikilink extension', () => {
     })
   })
 
-  test('sets href as invalid if note note found', () => {
+  test('sets href as invalid if note not found', () => {
     expect(tokenizer('[[Missing Note]]')).toMatchObject({
       href: 'invalid',
       raw: '[[Missing Note]]',
