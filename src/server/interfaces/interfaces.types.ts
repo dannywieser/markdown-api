@@ -1,14 +1,17 @@
 import { TokensList } from 'marked'
+
+import { Config } from '../../config'
 export interface CustomTokensList extends TokensList {
   foo?: string
 }
 
 export interface MarkdownInit {
   allNotes?: MarkdownNote[]
+  config: Config
 }
 
 export interface MarkdownInterfaceMode {
-  init: () => Promise<MarkdownInit>
+  init: (config: Config) => Promise<MarkdownInit>
   noteById: (noteId: string, init: MarkdownInit) => Promise<MarkdownNote | null>
 }
 
@@ -24,4 +27,4 @@ export interface MarkdownNote {
   tokens?: CustomTokensList
 }
 
-export type MarkdownNoteSource = 'bear' | 'file'
+export type MarkdownNoteSource = 'bear' | 'obsidian'

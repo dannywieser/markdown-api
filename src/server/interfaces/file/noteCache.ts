@@ -3,7 +3,7 @@ import path from 'path'
 
 import { MarkdownNote, MarkdownNoteSource } from '../interfaces.types'
 
-const source = 'file' as MarkdownNoteSource
+const source = 'obsidian' as MarkdownNoteSource
 
 const makeNoteUrl = (noteId: string) => `/note/${noteId}`
 export async function noteCache(rootDir: string): Promise<MarkdownNote[]> {

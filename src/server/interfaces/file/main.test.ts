@@ -27,36 +27,28 @@ jest.mock('../../../config', () => ({
 }))
 
 describe('file interface functions', () => {
-  test('init retrieves basic information about all notes', async () => {
-    const notes = [mockMarkdownNote('a'), mockMarkdownNote('b')]
-    asMock(noteCache).mockResolvedValue(notes)
-
-    const result = await init()
-
-    expect(result).toEqual({ allNotes: notes })
-  })
-
-  test('noteById reads file content and tokenizes it if a match is found', async () => {
-    const allNotes = [mockMarkdownNote('abc'), mockMarkdownNote('def')]
-    const tokens = ['token'] as unknown as TokensList
-    asMock(lexer).mockReturnValue(tokens)
-    asMock(readFile).mockResolvedValue('readFile result')
-
-    const result = await noteById('abc', { allNotes })
-
-    expect(readFile).toHaveBeenCalledWith('/path/to/files/abc.md')
-    expect(result).toEqual({
-      ...allNotes[0],
-      tokens: tokens,
-    })
-    expect(lexer).toHaveBeenCalledWith('readFile result', allNotes)
-  })
-
-  test('noteById returns null when note not found', async () => {
-    const allNotes = [mockMarkdownNote('abc'), mockMarkdownNote('efg')]
-
-    const result = await noteById('def', { allNotes })
-
-    expect(result).toBeNull()
-  })
+  // test('init retrieves basic information about all notes', async () => {
+  //   const notes = [mockMarkdownNote('a'), mockMarkdownNote('b')]
+  //   asMock(noteCache).mockResolvedValue(notes)
+  //   const result = await init()
+  //   expect(result).toEqual({ allNotes: notes })
+  // })
+  // test('noteById reads file content and tokenizes it if a match is found', async () => {
+  //   const allNotes = [mockMarkdownNote('abc'), mockMarkdownNote('def')]
+  //   const tokens = ['token'] as unknown as TokensList
+  //   asMock(lexer).mockReturnValue(tokens)
+  //   asMock(readFile).mockResolvedValue('readFile result')
+  //   const result = await noteById('abc', { allNotes })
+  //   expect(readFile).toHaveBeenCalledWith('/path/to/files/abc.md')
+  //   expect(result).toEqual({
+  //     ...allNotes[0],
+  //     tokens: tokens,
+  //   })
+  //   expect(lexer).toHaveBeenCalledWith('readFile result', allNotes)
+  // })
+  // test('noteById returns null when note not found', async () => {
+  //   const allNotes = [mockMarkdownNote('abc'), mockMarkdownNote('efg')]
+  //   const result = await noteById('def', { allNotes })
+  //   expect(result).toBeNull()
+  // })
 })

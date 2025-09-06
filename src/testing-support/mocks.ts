@@ -44,7 +44,7 @@ export const mockMarkdownNote = (id = 'abc123'): MarkdownNote => ({
   created: new Date(),
   id,
   modified: new Date(),
-  source: 'file',
+  source: 'obsidian',
   text: id,
   title: `title ${id}`,
 })
