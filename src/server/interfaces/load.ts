@@ -1,14 +1,12 @@
-import { loadConfig } from '../../config'
 import * as bearMod from './bear/main'
 import * as fileMod from './file/main'
-import { MarkdownInterfaceMode } from './interfaces.types'
+import { MarkdownInterfaceMode, MarkdownNoteSource } from './interfaces.types'
 
-export function loadInterface(): MarkdownInterfaceMode {
-  const { mode } = loadConfig()
+export function loadInterface(mode: MarkdownNoteSource): MarkdownInterfaceMode {
   if (mode === 'bear') {
     return bearMod
   }
-  if (mode === 'file') {
+  if (mode === 'obsidian') {
     return fileMod
   }
   throw new Error(`invalid mode: ${mode}`)

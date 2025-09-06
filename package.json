@@ -2,12 +2,18 @@
   "name": "@dannywieser/markdown-api",
   "version": "0.0.5",
   "keywords": [
-    "markdown"
+    "markdown",
+    "bear",
+    "obsidian",
+    "api"
   ],
   "description": "A local server which provides access to your markdown notes in Obsidian and Bear.",
   "homepage": "https://github.com/dannywieser/markdown-api#readme",
   "bugs": {
     "url": "https://github.com/dannywieser/markdown-api/issues"
+  },
+  "bin": {
+    "markdown-api": "./dist/server/server.js"
   },
   "repository": {
     "type": "git",
@@ -54,6 +60,7 @@
   "dependencies": {
     "date-fns": "4.1.0",
     "express": "5.1.0",
+    "inquirer": "12.9.4",
     "marked": "16.2.1",
     "sqlite": "5.1.1",
     "sqlite3": "5.1.7"

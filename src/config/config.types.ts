@@ -6,14 +6,13 @@ export interface BearConfig {
 }
 
 export interface Config {
-  bearConfig: BearConfig
-  fileConfig: FileConfig
+  bearConfig: BearConfig | undefined
+  fileConfig: FileConfig | undefined
   host: string
   mode: MarkdownNoteSource
   port: number
   rootDir: string
 }
-
 export interface FileConfig {
   directory: string
 }

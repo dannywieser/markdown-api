@@ -25,7 +25,7 @@ test('activity logs activity text with indent', () => {
 
 test('activity logs activity text with default indent', () => {
   logging.activity('Doing something')
-  expect(console.info).toHaveBeenCalledWith(' Doing something')
+  expect(console.info).toHaveBeenCalledWith('> Doing something')
 })
 
 test('activityWithDetail logs activity and detail with indent', () => {

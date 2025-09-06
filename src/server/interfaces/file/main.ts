@@ -1,24 +1,24 @@
+import { Config } from 'config'
 import path from 'path'
 
-import { loadConfig } from '../../../config'
 import { lexer } from '../../../marked/main'
 import { readFile } from '../../../util'
 import { MarkdownInit, MarkdownNote } from '../interfaces.types'
 import { noteCache } from './noteCache'
 
-const {
-  fileConfig: { directory },
-} = loadConfig()
-
-export async function init(): Promise<MarkdownInit> {
+export async function init(config: Config): Promise<MarkdownInit> {
+  const { fileConfig } = config
+  const directory = fileConfig?.directory ?? '~'
   const allNotes = await noteCache(directory)
-  return { allNotes }
+  return { allNotes, config }
 }
 
 export async function noteById(
   fileName: string,
-  { allNotes = [] }: MarkdownInit
+  { allNotes = [], config }: MarkdownInit
 ): Promise<MarkdownNote | null> {
+  // TODO: better typing!
+  const directory = config.fileConfig?.directory ?? '~'
   const note = allNotes.find(({ id }) => id === fileName)
   if (note) {
     const text = await readFile(path.join(directory, `${fileName}.md`))
