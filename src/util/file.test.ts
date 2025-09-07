@@ -1,10 +1,12 @@
+import * as fsSync from 'fs'
 import fs from 'fs/promises'
 
 import { asMock } from '../testing-support/mocks'
-import { expandPath } from './file'
+import { createDir, expandPath, fileExists, readJSONFile } from './file'
 import { isNotFoundError } from './file'
 import { readFile } from './file'
 
+jest.mock('fs')
 jest.mock('fs/promises')
 jest.mock('./logging')
 
@@ -79,5 +81,57 @@ describe('readFile', () => {
     const error = { code: 'EACCES' }
     asMock(fs.readFile).mockRejectedValue(error)
     await expect(readFile('/path/to/protected.txt')).rejects.toEqual(error)
+  })
+})
+
+describe('createDir', () => {
+  test('creates directory if it does not exist', () => {
+    const existsSyncMock = fsSync.existsSync as jest.Mock
+    const mkdirSyncMock = fsSync.mkdirSync as jest.Mock
+    existsSyncMock.mockReturnValue(false)
+
+    createDir('/some/dir')
+
+    expect(mkdirSyncMock).toHaveBeenCalledWith('/some/dir', { recursive: true })
+  })
+
+  test('does not create directory if it exists', () => {
+    const existsSyncMock = fsSync.existsSync as jest.Mock
+    const mkdirSyncMock = fsSync.mkdirSync as jest.Mock
+    existsSyncMock.mockReturnValue(true)
+
+    createDir('/some/dir')
+
+    expect(mkdirSyncMock).not.toHaveBeenCalled()
+  })
+})
+
+describe('readJSONFile', () => {
+  test('parses JSON from file', () => {
+    const mockData = { foo: 'bar' }
+    asMock(fsSync.readFileSync).mockReturnValue(JSON.stringify(mockData))
+
+    const result = readJSONFile('/some/file.json')
+
+    expect(result).toEqual(mockData)
+    expect(fsSync.readFileSync).toHaveBeenCalledWith('/some/file.json', 'utf-8')
+  })
+})
+
+describe('fileExists', () => {
+  test('returns true if file exists', () => {
+    asMock(fsSync.existsSync).mockReturnValue(true)
+
+    expect(fileExists('/some/file.txt')).toBe(true)
+
+    expect(fsSync.existsSync).toHaveBeenCalledWith('/some/file.txt')
+  })
+
+  test('returns false if file does not exist', () => {
+    asMock(fsSync.existsSync).mockReturnValue(false)
+
+    expect(fileExists('/some/file.txt')).toBe(false)
+
+    expect(fsSync.existsSync).toHaveBeenCalledWith('/some/file.txt')
   })
 })

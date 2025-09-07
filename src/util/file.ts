@@ -35,3 +35,8 @@ export const createDir = (destDir: string) => {
     fs.mkdirSync(destDir, { recursive: true })
   }
 }
+
+export const createFile = (filePath: string, fileContent: unknown, mode: fs.Mode = 0o600) =>
+  fs.writeFileSync(filePath, JSON.stringify(fileContent, null, 2), { mode })
+export const readJSONFile = (filePath: string) => JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+export const fileExists = (filePath: string) => fs.existsSync(filePath)

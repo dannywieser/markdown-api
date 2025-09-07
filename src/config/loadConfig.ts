@@ -1,28 +1,35 @@
-import fs from 'fs'
-import os from 'os'
-import path from 'path'
-
-import { activity, createDir, expandPath, header1 } from '../util'
+import {
+  activity,
+  createDir,
+  createFile,
+  expandPath,
+  fileExists,
+  header1,
+  readJSONFile,
+} from '../util'
 import { Config } from './config.types'
 import { promptForConfig } from './prompts'
 
-const CONFIG_FILENAME = '.markdown-api.json'
+const CONFIG_FILENAME = '~/.markdown-api.json'
 const host = '0.0.0.0'
 const port = 4040
 const dbPath =
   '~/Library/Group Containers/9K33E3U3T4.net.shinyfrog.bear/Application Data/database.sqlite'
 const keepBackups = 5
 
-const configPath = path.join(os.homedir(), CONFIG_FILENAME)
-
 export async function loadConfig(): Promise<Config> {
-  if (!fs.existsSync(configPath)) {
+  const configPath = expandPath(CONFIG_FILENAME)
+  if (!fileExists(configPath)) {
     header1(
       "Welcome to markdown-api!\n\nLet's setup the configuration for your local markdown notes.\n\n"
     )
     const { fileDirectory, mode, rootDir } = await promptForConfig()
+
+    // create the root directory
     const resolvedRootDir = expandPath(rootDir)
     createDir(resolvedRootDir)
+
+    // finalize config
     const bearConfig =
       mode === 'bear'
         ? {
@@ -39,11 +46,13 @@ export async function loadConfig(): Promise<Config> {
       port,
       rootDir: resolvedRootDir,
     }
-    fs.writeFileSync(configPath, JSON.stringify(finalConfig, null, 2), { mode: 0o600 })
+
+    // write config file
+    createFile(configPath, finalConfig)
     activity(`Created configuration at ${configPath}`)
     return finalConfig
   } else {
-    const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'))
+    const config = readJSONFile(configPath)
     return config
   }
 }
