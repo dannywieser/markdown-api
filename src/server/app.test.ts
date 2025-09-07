@@ -2,7 +2,7 @@ import request from 'supertest'
 
 import { loadConfig } from '../config'
 import { asMock, mockConfig } from '../testing-support/mocks'
-import app from './app'
+import { app } from './app'
 import * as bearMode from './interfaces/bear/main'
 import * as fileMode from './interfaces/file/main'
 import { MarkdownNote } from './interfaces/interfaces.types'
@@ -10,21 +10,7 @@ import { MarkdownNote } from './interfaces/interfaces.types'
 jest.mock('@/marked/main', () => ({
   lexer: jest.fn(),
 }))
-jest.mock('@/config', () => ({
-  loadConfig: jest.fn(() => ({
-    bearConfig: {
-      dbPath: '/path/to/db',
-      keepBackups: 5,
-    },
-    fileConfig: {
-      directory: '/dir',
-    },
-    host: 'mdm',
-    mode: 'bear',
-    port: 80,
-    rootDir: '/mock/root',
-  })),
-}))
+
 jest.mock('./interfaces/bear/main')
 jest.mock('./interfaces/file/main')
 
@@ -38,9 +24,6 @@ beforeEach(() => {
 
 describe('interface modes', () => {
   test('loads the bear interface mode based on the configuration', async () => {
-    const bearConfig = mockConfig({ mode: 'bear' })
-    asMock(loadConfig).mockResolvedValue(bearConfig)
-
     await request(app).get('/api/notes/123')
 
     expect(bearMode.init).toHaveBeenCalled()

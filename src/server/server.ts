@@ -2,10 +2,9 @@
 
 import { Config, loadConfig } from '../config'
 import { activity, header1 } from '../util/logging'
-import app from './app'
+import { app } from './app'
 
 export const startMessage = ({ host, mode, port, rootDir }: Config) => {
-  header1('🤖 Markdown API 🤖')
   activity(`server running: http://${host}:${port}`)
   activity(`root directory: ${rootDir}`)
   activity(`mode: ${mode}`)
