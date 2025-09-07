@@ -1,5 +1,4 @@
-import { Config } from 'config'
-
+import { Config } from '../../../config'
 import { lexer } from '../../../marked/main'
 import { MarkdownInit, MarkdownNote } from '../interfaces.types'
 import { backupBearDatabase, loadDatabase } from './database'

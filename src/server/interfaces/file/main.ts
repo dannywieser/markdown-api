@@ -1,6 +1,6 @@
-import { Config } from 'config'
 import path from 'path'
 
+import { Config } from '../../../config'
 import { lexer } from '../../../marked/main'
 import { readFile } from '../../../util'
 import { MarkdownInit, MarkdownNote } from '../interfaces.types'
