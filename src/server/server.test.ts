@@ -1,34 +1,26 @@
-import { activity, header1 } from '../util/logging'
-import app from './app'
+import { mockConfig } from '../testing-support'
+import { activity } from '../util/logging'
+import { app } from './app'
 import { startMessage, startup } from './server'
 
-jest.mock('@/marked/main', () => ({
+jest.mock('../marked/main', () => ({
   lexer: jest.fn(),
 }))
-jest.mock('@/config', () => ({
-  loadConfig: jest.fn(() => ({
-    fileConfig: {
-      directory: '/dir',
-    },
-    host: 'mdm',
-    mode: 'bear',
-    port: 80,
-    rootDir: '/mock/root',
-  })),
-}))
-jest.mock('@/util/logging')
+jest.mock('../util/logging')
 jest.mock('./app')
-
 describe('main server', () => {
-  test('server starts with loaded config', () => {
-    startup()
-    expect(app.listen).toHaveBeenCalledWith(80, expect.any(Function))
+  test('server starts with loaded config', async () => {
+    await startup()
+
+    expect(app.listen).toHaveBeenCalledWith(80, 'hostname', expect.any(Function))
   })
 
   test('startup message logs correct details', () => {
-    startMessage()
-    expect(header1).toHaveBeenCalledWith('Markdown Memory')
-    expect(activity).toHaveBeenCalledWith('server running: http://mdm:80')
+    const config = mockConfig()
+
+    startMessage(config)
+
+    expect(activity).toHaveBeenCalledWith('server running: http://localhost:80')
     expect(activity).toHaveBeenCalledWith('root directory: /mock/root')
     expect(activity).toHaveBeenCalledWith('mode: bear')
   })

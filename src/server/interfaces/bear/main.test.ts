@@ -2,7 +2,7 @@ import { TokensList } from 'marked'
 import { Database } from 'sqlite'
 
 import { lexer } from '../../../marked/main'
-import { asMock, mockMarkdownNote } from '../../../testing-support'
+import { asMock, mockConfig, mockMarkdownNote } from '../../../testing-support'
 import { backupBearDatabase, loadDatabase } from './database'
 import { init, noteById } from './main'
 import { noteCache } from './noteCache'
@@ -24,20 +24,24 @@ describe('bear interface functions', () => {
     asMock(loadDatabase).mockResolvedValue(mockDb)
     const notes = [mockMarkdownNote('a'), mockMarkdownNote('b')]
     asMock(noteCache).mockResolvedValue(notes)
+    const config = mockConfig({ mode: 'bear' })
 
-    const result = await init()
+    const result = await init(config)
+
     expect(backupBearDatabase).toHaveBeenCalled()
     expect(loadDatabase).toHaveBeenCalledWith('backup.sqlite')
     expect(noteCache).toHaveBeenCalledWith(mockDb)
-    expect(result).toEqual({ allNotes: notes })
+    expect(result).toEqual({ allNotes: notes, config })
   })
 
   test('noteById returns note with tokens when found', async () => {
     const allNotes = [mockMarkdownNote('abc'), mockMarkdownNote('def')]
     const tokens = ['token'] as unknown as TokensList
     asMock(lexer).mockReturnValue(tokens)
+    const config = mockConfig({ mode: 'bear' })
 
-    const result = await noteById('abc', { allNotes })
+    const result = await noteById('abc', { allNotes, config })
+
     expect(result).toEqual({
       ...allNotes[0],
       tokens: tokens,
@@ -47,7 +51,10 @@ describe('bear interface functions', () => {
 
   test('noteById returns null when note not found', async () => {
     const allNotes = [mockMarkdownNote('abc'), mockMarkdownNote('efg')]
-    const result = await noteById('def', { allNotes })
+    const config = mockConfig({ mode: 'bear' })
+
+    const result = await noteById('def', { allNotes, config })
+
     expect(result).toBeNull()
   })
 })

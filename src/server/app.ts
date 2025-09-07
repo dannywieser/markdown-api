@@ -1,12 +1,14 @@
 import express, { NextFunction, Request, Response } from 'express'
 
+import { loadConfig } from '../config'
 import { loadInterface } from './interfaces/load'
 
-const app = express()
+export const app = express()
 
 app.get('/api/notes/:noteId', async ({ params: { noteId } }, res, next) => {
-  const mode = loadInterface()
-  const init = await mode.init()
+  const config = await loadConfig()
+  const mode = loadInterface(config.mode)
+  const init = await mode.init(config)
   try {
     const result = await mode.noteById(noteId, init)
     if (!result) {
@@ -23,5 +25,3 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   console.error(err)
   res.status(500).json({ error: 'Internal Server Error' })
 })
-
-export default app

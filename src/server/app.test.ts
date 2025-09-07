@@ -2,7 +2,7 @@ import request from 'supertest'
 
 import { loadConfig } from '../config'
 import { asMock, mockConfig } from '../testing-support/mocks'
-import app from './app'
+import { app } from './app'
 import * as bearMode from './interfaces/bear/main'
 import * as fileMode from './interfaces/file/main'
 import { MarkdownNote } from './interfaces/interfaces.types'
@@ -10,17 +10,7 @@ import { MarkdownNote } from './interfaces/interfaces.types'
 jest.mock('@/marked/main', () => ({
   lexer: jest.fn(),
 }))
-jest.mock('@/config', () => ({
-  loadConfig: jest.fn(() => ({
-    fileConfig: {
-      directory: '/dir',
-    },
-    host: 'mdm',
-    mode: 'bear',
-    port: 80,
-    rootDir: '/mock/root',
-  })),
-}))
+
 jest.mock('./interfaces/bear/main')
 jest.mock('./interfaces/file/main')
 
@@ -28,15 +18,12 @@ const mockNote = {} as unknown as MarkdownNote
 
 const config = mockConfig()
 beforeEach(() => {
-  asMock(loadConfig).mockReturnValue(config)
+  asMock(loadConfig).mockResolvedValue(config)
   jest.spyOn(console, 'error').mockImplementation(() => {})
 })
 
 describe('interface modes', () => {
   test('loads the bear interface mode based on the configuration', async () => {
-    const bearConfig = mockConfig({ mode: 'bear' })
-    asMock(loadConfig).mockReturnValue(bearConfig)
-
     await request(app).get('/api/notes/123')
 
     expect(bearMode.init).toHaveBeenCalled()
@@ -47,8 +34,8 @@ describe('interface modes', () => {
   })
 
   test('loads the file interface mode based on the configuration', async () => {
-    const fileConfig = mockConfig({ mode: 'file' })
-    asMock(loadConfig).mockReturnValue(fileConfig)
+    const fileConfig = mockConfig({ mode: 'obsidian' })
+    asMock(loadConfig).mockResolvedValue(fileConfig)
 
     await request(app).get('/api/notes/123')
 
@@ -81,8 +68,8 @@ describe('GET /api/notes/:noteId', () => {
 })
 
 test('returns 500 and error message when an error is thrown', async () => {
-  const fileConfig = mockConfig({ mode: 'file' })
-  asMock(loadConfig).mockReturnValue(fileConfig)
+  const fileConfig = mockConfig({ mode: 'obsidian' })
+  asMock(loadConfig).mockResolvedValue(fileConfig)
 
   asMock(fileMode.noteById).mockRejectedValue('error')
 
