@@ -21,7 +21,7 @@ export async function loadConfig(): Promise<Config> {
   const configPath = expandPath(CONFIG_FILENAME)
   if (!fileExists(configPath)) {
     header1(
-      "Welcome to markdown-api!\n\nLet's setup the configuration for your local markdown notes.\n\n"
+      "Welcome to markdown-api!\n\nLet's set up the configuration for your local markdown notes.\n\n"
     )
     const { fileDirectory, mode, rootDir } = await promptForConfig()
 
