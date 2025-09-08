@@ -10,44 +10,33 @@ import {
 import { Config } from './config.types'
 import { promptForConfig } from './prompts'
 
-const CONFIG_FILENAME = '~/.markdown-api.json'
+const CONFIG_FILENAME = '~/.bear-markdown-api.json'
 const host = '0.0.0.0'
 const port = 4040
 const dbPath =
   '~/Library/Group Containers/9K33E3U3T4.net.shinyfrog.bear/Application Data/database.sqlite'
 const keepBackups = 5
+const mode = 'bear'
 
 export async function loadConfig(): Promise<Config> {
   const configPath = expandPath(CONFIG_FILENAME)
   if (!fileExists(configPath)) {
     header1(
-      "Welcome to markdown-api!\n\nLet's set up the configuration for your local markdown notes.\n\n"
+      "Welcome to bear-markdown-api!\n\nLet's set up the configuration for your local markdown notes.\n\n"
     )
-    const { fileDirectory, mode, rootDir } = await promptForConfig()
+    const { rootDir } = await promptForConfig()
 
-    // create the root directory
     const resolvedRootDir = expandPath(rootDir)
     createDir(resolvedRootDir)
 
-    // finalize config
-    const bearConfig =
-      mode === 'bear'
-        ? {
-            dbPath,
-            keepBackups,
-          }
-        : undefined
-    const fileConfig = mode === 'obsidian' ? { directory: fileDirectory } : undefined
-    const finalConfig = {
-      bearConfig,
-      fileConfig,
+    const finalConfig: Config = {
+      bearConfig: { dbPath, keepBackups },
       host,
       mode,
       port,
       rootDir: resolvedRootDir,
     }
 
-    // write config file
     createFile(configPath, finalConfig)
     activity(`Created configuration at ${configPath}`)
     return finalConfig

@@ -27,4 +27,4 @@ export interface MarkdownNote {
   tokens?: CustomTokensList
 }
 
-export type MarkdownNoteSource = 'bear' | 'obsidian'
+export type MarkdownNoteSource = 'bear'

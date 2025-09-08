@@ -22,9 +22,6 @@ export const mockConfig = (overrides?: Partial<Config>): Config => ({
     dbPath: '/path/to/beardb',
     keepBackups: 2,
   },
-  fileConfig: {
-    directory: '/path/to/files',
-  },
   host: 'localhost',
   mode: 'bear',
   port: 80,
@@ -44,7 +41,7 @@ export const mockMarkdownNote = (id = 'abc123'): MarkdownNote => ({
   created: new Date(),
   id,
   modified: new Date(),
-  source: 'obsidian',
+  source: 'bear',
   text: id,
   title: `title ${id}`,
 })
