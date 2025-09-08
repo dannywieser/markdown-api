@@ -4,7 +4,6 @@ import { loadConfig } from '../config'
 import { asMock, mockConfig } from '../testing-support/mocks'
 import { app } from './app'
 import * as bearMode from './interfaces/bear/main'
-import * as fileMode from './interfaces/file/main'
 import { MarkdownNote } from './interfaces/interfaces.types'
 
 jest.mock('@/marked/main', () => ({
@@ -12,7 +11,6 @@ jest.mock('@/marked/main', () => ({
 }))
 
 jest.mock('./interfaces/bear/main')
-jest.mock('./interfaces/file/main')
 
 const mockNote = {} as unknown as MarkdownNote
 
@@ -28,22 +26,6 @@ describe('interface modes', () => {
 
     expect(bearMode.init).toHaveBeenCalled()
     expect(bearMode.noteById).toHaveBeenCalled()
-
-    expect(fileMode.init).not.toHaveBeenCalled()
-    expect(fileMode.noteById).not.toHaveBeenCalled()
-  })
-
-  test('loads the file interface mode based on the configuration', async () => {
-    const fileConfig = mockConfig({ mode: 'obsidian' })
-    asMock(loadConfig).mockResolvedValue(fileConfig)
-
-    await request(app).get('/api/notes/123')
-
-    expect(bearMode.init).not.toHaveBeenCalled()
-    expect(bearMode.noteById).not.toHaveBeenCalled()
-
-    expect(fileMode.init).toHaveBeenCalled()
-    expect(fileMode.noteById).toHaveBeenCalled()
   })
 })
 
@@ -68,10 +50,10 @@ describe('GET /api/notes/:noteId', () => {
 })
 
 test('returns 500 and error message when an error is thrown', async () => {
-  const fileConfig = mockConfig({ mode: 'obsidian' })
-  asMock(loadConfig).mockResolvedValue(fileConfig)
+  const config = mockConfig()
+  asMock(loadConfig).mockResolvedValue(config)
 
-  asMock(fileMode.noteById).mockRejectedValue('error')
+  asMock(bearMode.noteById).mockRejectedValue('error')
 
   const response = await request(app).get('/api/notes/any-id')
   expect(response.status).toBe(500)

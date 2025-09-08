@@ -1,23 +1,22 @@
 {
-  "name": "@dannywieser/markdown-api",
-  "version": "0.0.5",
+  "name": "@dannywieser/bear-markdown-api",
+  "version": "0.0.1",
   "keywords": [
     "markdown",
     "bear",
-    "obsidian",
     "api"
   ],
-  "description": "A local server which provides access to your markdown notes in Obsidian and Bear.",
-  "homepage": "https://github.com/dannywieser/markdown-api#readme",
+  "description": "An read-only API for interacting with your markdown notes in Bear.",
+  "homepage": "https://github.com/dannywieser/bear-markdown-api#readme",
   "bugs": {
-    "url": "https://github.com/dannywieser/markdown-api/issues"
+    "url": "https://github.com/dannywieser/bear-markdown-api/issues"
   },
   "bin": {
-    "markdown-api": "./dist/server/server.js"
+    "bear-api": "./dist/server/server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dannywieser/markdown-api.git"
+    "url": "git+https://github.com/dannywieser/bear-markdown-api.git"
   },
   "license": "MIT",
   "author": "Danny Wieser",
