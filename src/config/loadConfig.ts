@@ -5,6 +5,7 @@ import {
   expandPath,
   fileExists,
   header1,
+  header2,
   readJSONFile,
 } from '../util'
 import { Config } from './config.types'
@@ -21,9 +22,7 @@ const mode = 'bear'
 export async function loadConfig(): Promise<Config> {
   const configPath = expandPath(CONFIG_FILENAME)
   if (!fileExists(configPath)) {
-    header1(
-      "Welcome to bear-markdown-api!\n\nLet's set up the configuration for your local markdown notes.\n\n"
-    )
+    header2('Configuration set up')
     const { rootDir } = await promptForConfig()
 
     const resolvedRootDir = expandPath(rootDir)
