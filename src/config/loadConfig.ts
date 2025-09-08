@@ -4,7 +4,6 @@ import {
   createFile,
   expandPath,
   fileExists,
-  header1,
   header2,
   readJSONFile,
 } from '../util'
