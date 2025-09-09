@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 
 import { Config } from '../config'
-import { MarkdownNote } from '../server/interfaces/interfaces.types'
+import { MarkdownNote } from '../types'
 
 /**
  * This is a helper which will cast a mock function to a jest.Mock to allow usage of the mock functions,

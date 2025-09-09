@@ -1,9 +1,5 @@
-import { TokensList } from 'marked'
-
 import { Config } from '../../config'
-export interface CustomTokensList extends TokensList {
-  foo?: string
-}
+import { MarkdownNote } from '../../types'
 
 export interface MarkdownInit {
   allNotes?: MarkdownNote[]
@@ -11,20 +7,7 @@ export interface MarkdownInit {
 }
 
 export interface MarkdownInterfaceMode {
+  allNotes: (params: unknown, init: MarkdownInit) => Promise<MarkdownNote[]>
   init: (config: Config) => Promise<MarkdownInit>
   noteById: (noteId: string, init: MarkdownInit) => Promise<MarkdownNote | null>
 }
-
-export interface MarkdownNote {
-  created: Date
-  id: string
-  modified: Date
-  noteUrl?: string
-  source: MarkdownNoteSource
-  sourceFile?: string
-  text?: string
-  title: string
-  tokens?: CustomTokensList
-}
-
-export type MarkdownNoteSource = 'bear'

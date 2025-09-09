@@ -2,9 +2,9 @@ import request from 'supertest'
 
 import { loadConfig } from '../config'
 import { asMock, mockConfig } from '../testing-support/mocks'
+import { MarkdownNote } from '../types'
 import { app } from './app'
 import * as bearMode from './interfaces/bear/main'
-import { MarkdownNote } from './interfaces/interfaces.types'
 
 jest.mock('@/marked/main', () => ({
   lexer: jest.fn(),
