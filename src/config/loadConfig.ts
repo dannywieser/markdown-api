@@ -17,6 +17,9 @@ const dbPath =
   '~/Library/Group Containers/9K33E3U3T4.net.shinyfrog.bear/Application Data/database.sqlite'
 const keepBackups = 5
 const mode = 'bear'
+const apiRoot = '/api'
+const openInBearUrl = 'bear://x-callback-url/open-note?id='
+const noteWebPath = '/note'
 
 export async function loadConfig(): Promise<Config> {
   const configPath = expandPath(CONFIG_FILENAME)
@@ -28,9 +31,11 @@ export async function loadConfig(): Promise<Config> {
     createDir(resolvedRootDir)
 
     const finalConfig: Config = {
-      bearConfig: { dbPath, keepBackups },
+      apiRoot,
+      bearConfig: { dbPath, keepBackups, openInBearUrl },
       host,
       mode,
+      noteWebPath,
       port,
       rootDir: resolvedRootDir,
     }

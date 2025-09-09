@@ -1,8 +1,16 @@
 import { Config } from '../../../config'
 import { lexer } from '../../../marked/main'
-import { MarkdownInit, MarkdownNote } from '../interfaces.types'
+import { MarkdownNote } from '../../../types'
+import { MarkdownInit } from '../interfaces.types'
 import { backupBearDatabase, loadDatabase } from './database'
-import { noteCache } from './noteCache'
+import { processNotes } from './processNotes'
+
+export async function allNotes(
+  _params: unknown,
+  { allNotes = [] }: MarkdownInit
+): Promise<MarkdownNote[]> {
+  return allNotes
+}
 
 export async function init(config: Config): Promise<MarkdownInit> {
   const backupFile = backupBearDatabase(config)
@@ -10,7 +18,7 @@ export async function init(config: Config): Promise<MarkdownInit> {
     throw new Error('unable to backup bear database')
   }
   const db = await loadDatabase(backupFile)
-  const allNotes = await noteCache(db)
+  const allNotes = await processNotes(db, config)
   return { allNotes, config }
 }
 

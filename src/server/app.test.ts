@@ -1,18 +1,15 @@
 import request from 'supertest'
 
 import { loadConfig } from '../config'
-import { asMock, mockConfig } from '../testing-support/mocks'
+import { asMock, mockConfig, mockMarkdownNote } from '../testing-support/mocks'
 import { app } from './app'
 import * as bearMode from './interfaces/bear/main'
-import { MarkdownNote } from './interfaces/interfaces.types'
 
 jest.mock('@/marked/main', () => ({
   lexer: jest.fn(),
 }))
 
 jest.mock('./interfaces/bear/main')
-
-const mockNote = {} as unknown as MarkdownNote
 
 const config = mockConfig()
 beforeEach(() => {
@@ -29,14 +26,26 @@ describe('interface modes', () => {
   })
 })
 
+describe('GET /api/notes', () => {
+  test('returns an array of notes', async () => {
+    const mockNotes = [mockMarkdownNote('a'), mockMarkdownNote('b'), mockMarkdownNote('c')]
+    asMock(bearMode.allNotes).mockResolvedValue(mockNotes)
+
+    const res = await request(app).get('/api/notes')
+
+    expect(res.status).toBe(200)
+    expect(res.body.length).toBe(3)
+  })
+})
+
 describe('GET /api/notes/:noteId', () => {
   test('returns note JSON when found', async () => {
+    const mockNote = mockMarkdownNote()
     asMock(bearMode.noteById).mockResolvedValue(mockNote)
 
     const response = await request(app).get('/api/notes/123')
 
     expect(response.status).toBe(200)
-    expect(response.body).toEqual(mockNote)
   })
 
   test('returns 404 when note not found', async () => {

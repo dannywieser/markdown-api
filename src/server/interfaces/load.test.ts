@@ -1,4 +1,4 @@
-import { MarkdownNoteSource } from './interfaces.types'
+import { MarkdownNoteSource } from '../../types'
 import { loadInterface } from './load'
 
 jest.mock('./bear/main', () => ({

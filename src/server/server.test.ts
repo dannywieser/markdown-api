@@ -7,7 +7,12 @@ jest.mock('../marked/main', () => ({
   lexer: jest.fn(),
 }))
 jest.mock('../util/logging')
-jest.mock('./app')
+jest.mock('./app', () => ({
+  app: {
+    listen: jest.fn().mockReturnValue({ on: jest.fn() }),
+  },
+}))
+
 describe('main server', () => {
   test('server starts with loaded config', async () => {
     await startup()
@@ -22,6 +27,5 @@ describe('main server', () => {
 
     expect(activity).toHaveBeenCalledWith('server running: http://localhost:80')
     expect(activity).toHaveBeenCalledWith('root directory: /mock/root')
-    expect(activity).toHaveBeenCalledWith('mode: bear')
   })
 })

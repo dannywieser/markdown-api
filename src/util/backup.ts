@@ -16,7 +16,6 @@ export function backupFile(sourceFile: string, targetDir: string, targetFile: st
   }
 
   const target = path.join(targetDir, targetFile)
-  activity(`backup: ${sourceFile} -> ${target}`, 2)
   fs.copyFileSync(sourceFile, target)
 
   return target

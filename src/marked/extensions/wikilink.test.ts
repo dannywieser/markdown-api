@@ -1,14 +1,14 @@
-import { MarkdownNote } from '../../server/interfaces/interfaces.types'
+import { MarkdownNote } from '../../types'
 import { makeWikilinkExtension } from './wikilink'
 
-const noteCache = [
+const allNotes = [
   { id: 'abc123', noteUrl: '/path/to/abc123', title: 'NoteOne' },
   { id: 'def456', noteUrl: '/path/to/def456', title: 'Note-Two' },
   { id: 'ghi789', title: 'Note/Three' },
 ] as unknown as MarkdownNote[]
 
 describe('wikilink extension', () => {
-  const extension = makeWikilinkExtension(noteCache)
+  const extension = makeWikilinkExtension(allNotes)
   // The typing for TokenizerExtension is quite picky so I'm just ignoring for the scope of testing.
   const start = extension.start as unknown as (src: string) => number
   const tokenizer = extension.tokenizer as unknown as (src: string) => unknown
