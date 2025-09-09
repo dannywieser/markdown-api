@@ -5,7 +5,7 @@ import { lexer } from '../../../marked/main'
 import { asMock, mockConfig, mockMarkdownNote } from '../../../testing-support'
 import { backupBearDatabase, loadDatabase } from './database'
 import { init, noteById } from './main'
-import { noteCache } from './noteCache'
+import { processNotes } from './processNotes'
 
 jest.mock('marked', () => ({
   marked: {
@@ -14,7 +14,7 @@ jest.mock('marked', () => ({
   },
 }))
 jest.mock('./database')
-jest.mock('./noteCache')
+jest.mock('./processNotes')
 jest.mock('../../../marked/main')
 
 describe('bear interface functions', () => {
@@ -23,14 +23,14 @@ describe('bear interface functions', () => {
     const mockDb = {} as Database
     asMock(loadDatabase).mockResolvedValue(mockDb)
     const notes = [mockMarkdownNote('a'), mockMarkdownNote('b')]
-    asMock(noteCache).mockResolvedValue(notes)
+    asMock(processNotes).mockResolvedValue(notes)
     const config = mockConfig({ mode: 'bear' })
 
     const result = await init(config)
 
     expect(backupBearDatabase).toHaveBeenCalled()
     expect(loadDatabase).toHaveBeenCalledWith('backup.sqlite')
-    expect(noteCache).toHaveBeenCalledWith(mockDb)
+    expect(processNotes).toHaveBeenCalledWith(mockDb, config)
     expect(result).toEqual({ allNotes: notes, config })
   })
 
