@@ -4,7 +4,7 @@ import { Database } from 'sqlite'
 import { lexer } from '../../../marked/main'
 import { asMock, mockConfig, mockMarkdownNote } from '../../../testing-support'
 import { backupBearDatabase, loadDatabase } from './database'
-import { init, noteById } from './main'
+import { allNotes, init, noteById } from './main'
 import { processNotes } from './processNotes'
 
 jest.mock('marked', () => ({
@@ -56,5 +56,14 @@ describe('bear interface functions', () => {
     const result = await noteById('def', { allNotes, config })
 
     expect(result).toBeNull()
+  })
+
+  test('allNotes returns the all notes array directly', async () => {
+    const notes = [mockMarkdownNote('abc'), mockMarkdownNote('efg')]
+    const config = mockConfig({ mode: 'bear' })
+
+    const result = await allNotes({}, { allNotes: notes, config })
+
+    expect(result).toEqual(notes)
   })
 })
