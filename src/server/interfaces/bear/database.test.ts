@@ -42,7 +42,7 @@ describe('bear database functions', () => {
     backupBearDatabase(config)
 
     expect(backupFile).toHaveBeenCalledWith(
-      '/expanded/db/path',
+      '/expanded/db/path/dbfile.sqllite',
       '/mock/root/bear-backups',
       'bear-backup-20240101-11.sqlite'
     )

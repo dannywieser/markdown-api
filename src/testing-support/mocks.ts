@@ -20,9 +20,11 @@ export const asMock = <T extends (...args: any[]) => any>(mockTarget: T): jest.M
 export const mockConfig = (overrides?: Partial<Config>): Config => ({
   apiRoot: '/api',
   bearConfig: {
-    dbPath: '/path/to/beardb',
+    dbFile: 'dbfile.sqllite',
+    imagePath: 'images/',
     keepBackups: 2,
     openInBearUrl: '/path/in/bear?id=',
+    rootPath: '/path/to/bear',
   },
   host: 'localhost',
   mode: 'bear',
