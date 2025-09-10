@@ -1,9 +1,11 @@
 import { MarkdownNoteSource } from '../types'
 
 export interface BearConfig {
-  dbPath: string
+  dbFile: string
+  imagePath: string
   keepBackups: number
   openInBearUrl: string
+  rootPath: string
 }
 
 export interface Config {
