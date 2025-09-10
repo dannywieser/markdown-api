@@ -27,7 +27,7 @@ describe('processNotes', () => {
     expect(result[0]?.title).toBe('a title')
     expect(result[0]?.text).toBe('a text')
     expect(result[0]?.externalUrl).toBe('/path/in/bear?id=a')
-    expect(result[0]?.self).toBe('/api/notes/a')
+    expect(result[0]?.self).toBe('http://localhost:80/api/notes/a')
     expect(result[0]?.noteUrl).toBe('/path/to/web/a')
 
     expect(result[1]?.id).toBe('b')
@@ -37,7 +37,7 @@ describe('processNotes', () => {
     expect(result[1]?.title).toBe('b title')
     expect(result[1]?.text).toBe('b text')
     expect(result[1]?.externalUrl).toBe('/path/in/bear?id=b')
-    expect(result[1]?.self).toBe('/api/notes/b')
+    expect(result[1]?.self).toBe('http://localhost:80/api/notes/b')
     expect(result[1]?.noteUrl).toBe('/path/to/web/b')
 
     expect(result[2]?.id).toBe('c')
@@ -47,7 +47,7 @@ describe('processNotes', () => {
     expect(result[2]?.title).toBe('c title')
     expect(result[2]?.text).toBe('c text')
     expect(result[2]?.externalUrl).toBe('/path/in/bear?id=c')
-    expect(result[2]?.self).toBe('/api/notes/c')
+    expect(result[2]?.self).toBe('http://localhost:80/api/notes/c')
     expect(result[2]?.noteUrl).toBe('/path/to/web/c')
   })
 
