@@ -28,7 +28,11 @@ describe('interface modes', () => {
 
 describe('GET /api/notes', () => {
   test('returns an array of notes', async () => {
-    const mockNotes = [mockMarkdownNote('a'), mockMarkdownNote('b'), mockMarkdownNote('c')]
+    const mockNotes = [
+      mockMarkdownNote({ id: 'a' }),
+      mockMarkdownNote({ id: 'b' }),
+      mockMarkdownNote({ id: 'c' }),
+    ]
     asMock(bearMode.allNotes).mockResolvedValue(mockNotes)
 
     const res = await request(app).get('/api/notes')

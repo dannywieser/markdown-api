@@ -54,7 +54,7 @@ describe('bear interface functions', () => {
       files: [],
       tokens: tokens,
     })
-    expect(lexer).toHaveBeenCalledWith('note text', allNotes)
+    expect(lexer).toHaveBeenCalledWith('note text', allNotes, [])
   })
 
   test('files returned by getFilesForNote are included in the response', async () => {
@@ -75,6 +75,7 @@ describe('bear interface functions', () => {
     const result = await noteById('def', init)
 
     expect(result?.files).toEqual(files)
+    expect(lexer).toHaveBeenCalledWith('note text', allNotes, files)
     expect(getFilesForNote).toHaveBeenCalledWith(allNotes[1], init)
   })
 

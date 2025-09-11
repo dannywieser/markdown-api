@@ -1,14 +1,15 @@
 import { marked } from 'marked'
 
-import { MarkdownNote } from '../types'
+import { MarkdownNote, MarkdownNoteFile } from '../types'
 import { highlightExtension, tagExtension } from './extensions'
+import { makeBearImagesExtension } from './extensions/bearImages'
 import { makeWikilinkExtension } from './extensions/wikilink'
 
-export function lexer(markdownText: string, allNotes: MarkdownNote[]) {
+export function lexer(markdownText: string, allNotes: MarkdownNote[], files: MarkdownNoteFile[]) {
   const wikilinksExtension = makeWikilinkExtension(allNotes)
-  // TODO: need a new extension here which will add the correct path to the images in bear.
+  const bearImagesExtension = makeBearImagesExtension(files)
   marked.use({
-    extensions: [highlightExtension, tagExtension, wikilinksExtension],
+    extensions: [bearImagesExtension, highlightExtension, tagExtension, wikilinksExtension],
   })
   return marked.lexer(markdownText)
 }

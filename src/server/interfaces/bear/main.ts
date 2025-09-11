@@ -34,7 +34,7 @@ export async function noteById(
     ? {
         ...note,
         files,
-        tokens: lexer(note.text ?? '', allNotes),
+        tokens: lexer(note.text ?? '', allNotes, files),
       }
     : null
 }

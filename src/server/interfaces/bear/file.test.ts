@@ -35,18 +35,18 @@ describe('getFilesForNote', () => {
 
   it('returns empty array when db returns null/undefined', async () => {
     db.all.mockResolvedValue(null)
-    const note = { primaryKey: 456 }
+    const note = mockMarkdownNote({ primaryKey: 456 })
 
-    const result = await getFilesForNote(note as any, init as any)
+    const result = await getFilesForNote(note, init)
 
     expect(result).toEqual([])
   })
 
   it('returns empty array when db returns empty array', async () => {
     db.all.mockResolvedValue([])
-    const note = { primaryKey: 789 }
+    const note = mockMarkdownNote({ primaryKey: 789 })
 
-    const result = await getFilesForNote(note as any, init as any)
+    const result = await getFilesForNote(note, init)
 
     expect(result).toEqual([])
   })

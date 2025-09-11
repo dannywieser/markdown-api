@@ -43,7 +43,7 @@ export const mockBearNote = (id = 'abc123') => ({
   ZUNIQUEIDENTIFIER: id,
 })
 
-export const mockMarkdownNote = (overrides: Partial<MarkdownNote>): MarkdownNote => ({
+export const mockMarkdownNote = (overrides?: Partial<MarkdownNote>): MarkdownNote => ({
   created: new Date(),
   externalUrl: '/external/path',
   id: 'abc123',
