@@ -16,6 +16,7 @@ const port = 4040
 const rootPath = '~/Library/Group Containers/9K33E3U3T4.net.shinyfrog.bear/Application Data'
 const dbFile = 'database.sqlite'
 const imagePath = 'Local Files/Note Images/'
+const imageRoot = '/images'
 const keepBackups = 5
 const mode = 'bear'
 const apiRoot = '/api'
@@ -35,6 +36,7 @@ export async function loadConfig(): Promise<Config> {
       apiRoot,
       bearConfig: { dbFile, imagePath, keepBackups, openInBearUrl, rootPath },
       host,
+      imageRoot,
       mode,
       noteWebPath,
       port,

@@ -1,9 +1,12 @@
+import { Database } from 'sqlite'
+
 import { Config } from '../../config'
 import { MarkdownNote } from '../../types'
 
 export interface MarkdownInit {
   allNotes?: MarkdownNote[]
   config: Config
+  db: Database
 }
 
 export interface MarkdownInterfaceMode {

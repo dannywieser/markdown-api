@@ -15,12 +15,20 @@ export async function processNotes(db: Database, config: Config): Promise<Markdo
   const rawNotes: BearNote[] = await db.all(`SELECT * FROM ZSFNOTE where ZTRASHED=0`)
 
   return rawNotes.map(
-    ({ ZCREATIONDATE, ZMODIFICATIONDATE, ZTEXT, ZTITLE, ZUNIQUEIDENTIFIER: id }) => ({
+    ({
+      Z_PK: primaryKey,
+      ZCREATIONDATE,
+      ZMODIFICATIONDATE,
+      ZTEXT,
+      ZTITLE,
+      ZUNIQUEIDENTIFIER: id,
+    }) => ({
       created: convertDate(ZCREATIONDATE),
       externalUrl: bearUrl(id, config),
       id,
       modified: convertDate(ZMODIFICATIONDATE),
       noteUrl: webUrl(id, config),
+      primaryKey,
       self: selfUrl(id, config),
       source: 'bear',
       text: ZTEXT,

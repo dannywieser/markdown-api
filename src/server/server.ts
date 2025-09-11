@@ -17,15 +17,16 @@ export const startup = async () => {
   const config = await loadConfig()
   const {
     bearConfig: { imagePath, rootPath },
+    imageRoot,
   } = config
 
   // image server
-  const imageRoot = `${expandPath(rootPath)}/${imagePath}`
-  app.use('/images', express.static(imageRoot))
+  const imageFsRoot = `${expandPath(rootPath)}/${imagePath}`
+  app.use(imageRoot, express.static(imageFsRoot))
 
   const { host, port } = config
 
-  const server = app.listen(port, host, () => startMessage(config, imageRoot))
+  const server = app.listen(port, host, () => startMessage(config, imageFsRoot))
   server.on('error', (err) => {
     console.error('server error:', err)
     process.exit(1)

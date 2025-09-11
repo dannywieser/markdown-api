@@ -12,6 +12,7 @@ export interface Config {
   apiRoot: string
   bearConfig: BearConfig
   host: string
+  imageRoot: string
   mode: MarkdownNoteSource
   noteWebPath: string
   port: number
