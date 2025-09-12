@@ -45,11 +45,13 @@ export const mockBearNote = (id = 'abc123') => ({
 export const mockMarkdownNote = (overrides?: Partial<MarkdownNote>): MarkdownNote => ({
   created: new Date(),
   externalUrl: '/external/path',
+  files: [],
   id: 'abc123',
   modified: new Date(),
   primaryKey: 1,
   self: '/path/to/self',
   source: 'bear',
+  tags: [],
   text: 'note text',
   title: 'note title',
   ...overrides,
