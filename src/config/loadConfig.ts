@@ -13,8 +13,10 @@ import { promptForConfig } from './prompts'
 const CONFIG_FILENAME = '~/.bear-markdown-api.json'
 const host = '0.0.0.0'
 const port = 4040
-const dbPath =
-  '~/Library/Group Containers/9K33E3U3T4.net.shinyfrog.bear/Application Data/database.sqlite'
+const rootPath = '~/Library/Group Containers/9K33E3U3T4.net.shinyfrog.bear/Application Data'
+const dbFile = 'database.sqlite'
+const imagePath = 'Local Files/Note Images/'
+const imageRoot = '/images'
 const keepBackups = 5
 const mode = 'bear'
 const apiRoot = '/api'
@@ -32,8 +34,9 @@ export async function loadConfig(): Promise<Config> {
 
     const finalConfig: Config = {
       apiRoot,
-      bearConfig: { dbPath, keepBackups, openInBearUrl },
+      bearConfig: { dbFile, imagePath, keepBackups, openInBearUrl, rootPath },
       host,
+      imageRoot,
       mode,
       noteWebPath,
       port,

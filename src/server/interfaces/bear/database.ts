@@ -10,9 +10,11 @@ const backupDir = 'bear-backups'
 const extension = '.sqlite'
 const getBackupFileName = () => `${backupPrefix}${dateWithHour()}${extension}`
 
-export function backupBearDatabase({ bearConfig, rootDir }: Config) {
-  const dbPath = expandPath(bearConfig?.dbPath ?? '')
-  const keepBackups = bearConfig?.keepBackups ?? 0
+export function backupBearDatabase({
+  bearConfig: { dbFile, keepBackups, rootPath },
+  rootDir,
+}: Config) {
+  const dbPath = `${expandPath(rootPath)}/${dbFile}`
   const destDir = path.join(rootDir, backupDir)
   createDir(destDir)
   backupPrune(backupPrefix, destDir, keepBackups)

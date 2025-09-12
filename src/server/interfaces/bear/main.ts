@@ -3,6 +3,7 @@ import { lexer } from '../../../marked/main'
 import { MarkdownNote } from '../../../types'
 import { MarkdownInit } from '../interfaces.types'
 import { backupBearDatabase, loadDatabase } from './database'
+import { getFilesForNote } from './files'
 import { processNotes } from './processNotes'
 
 export async function allNotes(
@@ -19,18 +20,21 @@ export async function init(config: Config): Promise<MarkdownInit> {
   }
   const db = await loadDatabase(backupFile)
   const allNotes = await processNotes(db, config)
-  return { allNotes, config }
+  return { allNotes, config, db }
 }
 
 export async function noteById(
   findNoteId: string,
-  { allNotes = [] }: MarkdownInit
+  init: MarkdownInit
 ): Promise<MarkdownNote | null> {
+  const { allNotes = [] } = init
   const note = allNotes.find(({ id }) => id === findNoteId)
+  const files = note ? await getFilesForNote(note, init) : []
   return note
     ? {
         ...note,
-        tokens: lexer(note.text ?? '', allNotes),
+        files,
+        tokens: lexer(note.text ?? '', allNotes, files),
       }
     : null
 }
