@@ -6,7 +6,7 @@ import { asMock, mockConfig, mockMarkdownNote } from '../../../testing-support'
 import { backupBearDatabase, loadDatabase } from './database'
 import { getFilesForNote } from './files'
 import { allNotes, init, noteById } from './main'
-import { processNotes } from './processNotes'
+import { processNotes } from './mapNote'
 
 jest.mock('marked', () => ({
   marked: {
