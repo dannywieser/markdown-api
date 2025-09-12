@@ -2,7 +2,7 @@ jest.mock('../config', () => ({
   loadConfig: jest.fn(() => ({
     apiRoot: '/api',
     bearConfig: {
-      dbFile: 'dbfile.sqllite',
+      dbFile: 'dbfile.sqlite',
       imagePath: 'images/',
       keepBackups: 5,
       openInBearUrl: 'path/in/bear?id=',
