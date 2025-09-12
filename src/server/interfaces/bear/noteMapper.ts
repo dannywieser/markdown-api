@@ -11,14 +11,14 @@ const bearUrl = (noteId: string, { bearConfig: { openInBearUrl } }: Config) =>
   `${openInBearUrl}${noteId}`
 const webUrl = (noteId: string, { noteWebPath }: Config) => `${noteWebPath}/${noteId}`
 
-export async function processNotes(db: Database, config: Config): Promise<MarkdownNote[]> {
+export async function mapNotes(db: Database, config: Config): Promise<MarkdownNote[]> {
   const rawNotes: BearNote[] = await db.all(`SELECT * FROM ZSFNOTE where ZTRASHED = 0`)
   const allTags = await loadTags(db)
 
-  return Promise.all(rawNotes.map(async (note) => await processNote(note, db, config, allTags)))
+  return Promise.all(rawNotes.map(async (note) => await mapNote(note, db, config, allTags)))
 }
 
-const processNote = async (
+const mapNote = async (
   note: BearNote,
   db: Database,
   config: Config,
