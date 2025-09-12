@@ -4,12 +4,14 @@ import morgan from 'morgan'
 import { loadConfig } from '../config'
 import { loadInterface } from './interfaces/load'
 
+const appMode = 'bear'
+
 export const app = express()
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 
 app.get('/api/notes', async (params, res, next) => {
   const config = await loadConfig()
-  const mode = loadInterface(config.mode)
+  const mode = loadInterface(appMode)
   const init = await mode.init(config)
   try {
     const result = await mode.allNotes(params, init)
@@ -21,7 +23,7 @@ app.get('/api/notes', async (params, res, next) => {
 
 app.get('/api/notes/:noteId', async ({ params: { noteId } }, res, next) => {
   const config = await loadConfig()
-  const mode = loadInterface(config.mode)
+  const mode = loadInterface(appMode)
   const init = await mode.init(config)
   try {
     const result = await mode.noteById(noteId, init)

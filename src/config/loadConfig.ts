@@ -1,51 +1,16 @@
-import {
-  activity,
-  createDir,
-  createFile,
-  expandPath,
-  fileExists,
-  header2,
-  readJSONFile,
-} from '../util'
+import { createDir, createFile, expandPath, fileExists, readJSONFile } from '../util'
+import defaultConfig from './config.default.json'
 import { Config } from './config.types'
-import { promptForConfig } from './prompts'
 
-const CONFIG_FILENAME = '~/.bear-markdown-api.json'
-const host = '0.0.0.0'
-const port = 4040
-const rootPath = '~/Library/Group Containers/9K33E3U3T4.net.shinyfrog.bear/Application Data'
-const dbFile = 'database.sqlite'
-const imagePath = 'Local Files/Note Images/'
-const imageRoot = '/images'
-const keepBackups = 5
-const mode = 'bear'
-const apiRoot = '/api'
-const openInBearUrl = 'bear://x-callback-url/open-note?id='
-const noteWebPath = '/note'
+const rootDir = '~/.bear-markdown-api'
 
 export async function loadConfig(): Promise<Config> {
-  const configPath = expandPath(CONFIG_FILENAME)
+  const configPath = expandPath(`${rootDir}/config.json`)
   if (!fileExists(configPath)) {
-    header2('Configuration set up')
-    const { rootDir } = await promptForConfig()
-
     const resolvedRootDir = expandPath(rootDir)
     createDir(resolvedRootDir)
-
-    const finalConfig: Config = {
-      apiRoot,
-      bearConfig: { dbFile, imagePath, keepBackups, openInBearUrl, rootPath },
-      host,
-      imageRoot,
-      mode,
-      noteWebPath,
-      port,
-      rootDir: resolvedRootDir,
-    }
-
-    createFile(configPath, finalConfig)
-    activity(`Created configuration at ${configPath}`)
-    return finalConfig
+    createFile(configPath, defaultConfig)
+    return defaultConfig
   } else {
     const config = readJSONFile(configPath)
     return config

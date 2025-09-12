@@ -31,7 +31,7 @@ describe('bear interface functions', () => {
     asMock(loadDatabase).mockResolvedValue(db)
     const notes = [mockMarkdownNote({ id: 'a' }), mockMarkdownNote({ id: 'b' })]
     asMock(processNotes).mockResolvedValue(notes)
-    const config = mockConfig({ mode: 'bear' })
+    const config = mockConfig()
 
     const result = await init(config)
 
@@ -45,7 +45,7 @@ describe('bear interface functions', () => {
     const allNotes = [mockMarkdownNote({ id: 'abc' }), mockMarkdownNote({ id: 'def' })]
     const tokens = ['token'] as unknown as TokensList
     asMock(lexer).mockReturnValue(tokens)
-    const config = mockConfig({ mode: 'bear' })
+    const config = mockConfig()
 
     const result = await noteById('abc', { allNotes, config, db })
 
@@ -64,7 +64,7 @@ describe('bear interface functions', () => {
     ]
     const tokens = ['token'] as unknown as TokensList
     asMock(lexer).mockReturnValue(tokens)
-    const config = mockConfig({ mode: 'bear' })
+    const config = mockConfig()
     const files = [
       { directory: 'a', file: 'a', path: 'a' },
       { directory: 'b', file: 'b', path: 'b' },
@@ -81,7 +81,7 @@ describe('bear interface functions', () => {
 
   test('noteById returns null when note not found', async () => {
     const allNotes = [mockMarkdownNote({ id: 'abc' }), mockMarkdownNote({ id: 'efg' })]
-    const config = mockConfig({ mode: 'bear' })
+    const config = mockConfig()
 
     const result = await noteById('def', { allNotes, config, db })
 
@@ -90,7 +90,7 @@ describe('bear interface functions', () => {
 
   test('allNotes returns the all notes array directly', async () => {
     const notes = [mockMarkdownNote({ id: 'abc' }), mockMarkdownNote({ id: 'efg' })]
-    const config = mockConfig({ mode: 'bear' })
+    const config = mockConfig()
 
     const result = await allNotes({}, { allNotes: notes, config, db })
 

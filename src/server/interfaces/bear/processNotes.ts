@@ -5,8 +5,8 @@ import { MarkdownNote } from '../../../types'
 import { convertDate } from '../../../util'
 import { BearNote } from './bear.types'
 
-const selfUrl = (noteId: string, { apiRoot, host, port }: Config) =>
-  `http://${host}:${port}${apiRoot}/notes/${noteId}`
+const selfUrl = (noteId: string, { apiUriRoot, host, port }: Config) =>
+  `http://${host}:${port}${apiUriRoot}/notes/${noteId}`
 const bearUrl = (noteId: string, { bearConfig: { openInBearUrl } }: Config) =>
   `${openInBearUrl}${noteId}`
 const webUrl = (noteId: string, { noteWebPath }: Config) => `${noteWebPath}/${noteId}`

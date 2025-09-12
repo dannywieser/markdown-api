@@ -61,7 +61,6 @@
   "dependencies": {
     "date-fns": "4.1.0",
     "express": "5.1.0",
-    "inquirer": "12.9.4",
     "marked": "16.2.1",
     "morgan": "1.10.1",
     "sqlite": "5.1.1",

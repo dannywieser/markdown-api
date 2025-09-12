@@ -1,19 +1,16 @@
-import { MarkdownNoteSource } from '../types'
-
 export interface BearConfig {
+  appDataRoot: string
   dbFile: string
-  imagePath: string
-  keepBackups: number
+  imageRoot: string
   openInBearUrl: string
-  rootPath: string
 }
 
 export interface Config {
-  apiRoot: string
+  apiUriRoot: string
+  backups: number
   bearConfig: BearConfig
   host: string
-  imageRoot: string
-  mode: MarkdownNoteSource
+  imageUriRoot: string
   noteWebPath: string
   port: number
   rootDir: string

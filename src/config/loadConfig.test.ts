@@ -1,10 +1,7 @@
-import inquirer from 'inquirer'
-
 import { asMock, mockConfig } from '../testing-support'
 import { createFile, expandPath, fileExists, readJSONFile } from '../util'
 import { loadConfig } from './loadConfig'
 
-jest.mock('inquirer')
 jest.mock('../util')
 
 beforeEach(() => {
@@ -12,22 +9,16 @@ beforeEach(() => {
 })
 
 describe('loadConfig', () => {
-  test('creates config if not present and prompts user: bear mode', async () => {
+  test('creates config from default if not present', async () => {
     asMock(fileExists).mockReturnValue(false)
-    asMock(inquirer.prompt).mockResolvedValue({
-      fileDirectory: undefined,
-      mode: 'bear',
-      rootDir: '~/test-root',
-    })
 
     const config = await loadConfig()
 
     expect(createFile).toHaveBeenCalledWith(
-      '/expanded/~/.bear-markdown-api.json',
+      '/expanded/~/.bear-markdown-api/config.json',
       expect.any(Object)
     )
-    expect(config.rootDir).toContain('/expanded/~/test-root')
-    expect(config.mode).toBe('bear')
+    expect(config.rootDir).toContain('~/.bear-markdown-api')
     expect(config.bearConfig).toBeDefined()
   })
 
