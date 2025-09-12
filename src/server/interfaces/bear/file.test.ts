@@ -3,7 +3,7 @@ import { MarkdownInit } from '../interfaces.types'
 import { getFilesForNote } from './files'
 
 describe('getFilesForNote', () => {
-  const config = { imageRoot: '/images' }
+  const config = { imageUriRoot: '/images' }
   const db = {
     all: jest.fn(),
   }

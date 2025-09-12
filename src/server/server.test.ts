@@ -22,7 +22,7 @@ describe('main server', () => {
   test('server starts with loaded config', async () => {
     await startup()
 
-    expect(app.listen).toHaveBeenCalledWith(80, 'hostname', expect.any(Function))
+    expect(app.listen).toHaveBeenCalledWith(80, 'localhost', expect.any(Function))
   })
 
   test('startup message logs correct details', () => {
@@ -31,7 +31,7 @@ describe('main server', () => {
     startMessage(config, '/path/to/images')
 
     expect(activity).toHaveBeenCalledWith('server running: http://localhost:80')
-    expect(activity).toHaveBeenCalledWith('root directory: /mock/root')
+    expect(activity).toHaveBeenCalledWith('root directory: ~/.root-dir')
     expect(activity).toHaveBeenCalledWith('image directory: /path/to/images')
   })
 })

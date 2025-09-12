@@ -18,20 +18,19 @@ export const asMock = <T extends (...args: any[]) => any>(mockTarget: T): jest.M
   mockTarget as jest.MockedFunction<T>
 
 export const mockConfig = (overrides?: Partial<Config>): Config => ({
-  apiRoot: '/api',
+  apiUriRoot: '/api',
+  backups: 2,
   bearConfig: {
+    appDataRoot: '/path/to/bear',
     dbFile: 'dbfile.sqlite',
-    imagePath: 'images/',
-    keepBackups: 2,
+    imageRoot: 'images/',
     openInBearUrl: '/path/in/bear?id=',
-    rootPath: '/path/to/bear',
   },
   host: 'localhost',
-  imageRoot: '/images',
-  mode: 'bear',
+  imageUriRoot: '/images',
   noteWebPath: '/path/to/web',
   port: 80,
-  rootDir: '/mock/root',
+  rootDir: '~/.root-dir',
   ...overrides,
 })
 

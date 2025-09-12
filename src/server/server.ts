@@ -9,6 +9,7 @@ import { app } from './app'
 export const startMessage = ({ host, port, rootDir }: Config, imageRoot: string) => {
   activity(`server running: http://${host}:${port}`)
   activity(`root directory: ${rootDir}`)
+  activity(`config file: ${rootDir}/config.json`)
   activity(`image directory: ${imageRoot}`)
 }
 
@@ -16,13 +17,13 @@ export const startup = async () => {
   header1('🤖🐻 Bear Markdown API 🐻🤖')
   const config = await loadConfig()
   const {
-    bearConfig: { imagePath, rootPath },
-    imageRoot,
+    bearConfig: { appDataRoot, imageRoot },
+    imageUriRoot,
   } = config
 
   // image server
-  const imageFsRoot = `${expandPath(rootPath)}/${imagePath}`
-  app.use(imageRoot, express.static(imageFsRoot))
+  const imageFsRoot = `${expandPath(appDataRoot)}/${imageRoot}`
+  app.use(imageUriRoot, express.static(imageFsRoot))
 
   const { host, port } = config
 
