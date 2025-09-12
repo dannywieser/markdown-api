@@ -14,9 +14,10 @@ export function backupBearDatabase({
   rootDir,
 }: Config) {
   const dbPath = `${expandPath(appDataRoot)}/${dbFile}`
-  createDir(rootDir)
-  backupPrune(backupPrefix, rootDir, backups)
-  return dbPath ? backupFile(dbPath, rootDir, getBackupFileName()) : null
+  const backupPath = expandPath(rootDir)
+  createDir(backupPath)
+  backupPrune(backupPrefix, backupPath, backups)
+  return dbPath ? backupFile(dbPath, backupPath, getBackupFileName()) : null
 }
 
 const driver = sqlite3.Database
